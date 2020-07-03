@@ -21,6 +21,9 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  simple_animations: ^2.2.1
+  carousel_slider: ^2.2.1
+  carousel_pro: ^1.0.0
   flutter:
     sdk: flutter
 
@@ -67,9 +70,9 @@ flutter:
     - family: DancingScript
       fonts:
         - asset: assets/fonts/DancingScript-Regular.ttf
-    - family: OpenSans
-      fonts:
-        - asset: assets/fonts/OpenSans/Semi-Bold.ttf
+    #- family: OpenSans
+    #  fonts:
+    #    - asset: assets/fonts/OpenSans/Semi-Bold.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

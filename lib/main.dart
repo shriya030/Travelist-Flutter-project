@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'welcome_page.dart';
+import 'package:carousel_pro/carousel_pro.dart';
 
 void main()
 {

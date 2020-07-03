@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
 import 'transport.dart';
+import 'package:carousel_pro/carousel_pro.dart';
 
 void goToWelcomePage() => runApp(MaterialApp(
   home: WelcomePage(),
@@ -54,8 +55,9 @@ class WelcomePage extends StatelessWidget {
             Text(
               "Travel + Assist",
               style: TextStyle(
-                fontSize: 50,
+                fontSize: 55,
                 color: Colors.blue,
+                fontFamily: 'Yellowtail',
               ),
             ),
             RaisedButton(
@@ -70,16 +72,28 @@ class WelcomePage extends StatelessWidget {
               ),
             ),
             Container(
-              margin: EdgeInsets.all(30.0),
-              //color: Colors.pinkAccent,
+              width: 350,
               height: 250,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage('http://www.itsfrontporch.com/wp-content/uploads/6359524176194484221446729975_travel-01.jpg'),
-                  fit: BoxFit.fitWidth,
-                ),
+              margin: EdgeInsets.all(20.0),
+              child: Carousel(
+                boxFit: BoxFit.fill,
+                autoplay: true,
+                animationCurve: Curves.fastOutSlowIn,
+                animationDuration: Duration(milliseconds: 1000),
+                dotSize: 1.0,
+                dotIncreaseSize: 1.0,
+                dotBgColor: Colors.transparent,
+                dotColor: Colors.transparent,
+                //dotPosition: DotPosition.bottomCenter,
+                showIndicator: true,
+                indicatorBgPadding: 7.0,
+                images: [
+                  NetworkImage('https://lonelyplanetwpnews.imgix.net/2018/01/taj-mahal-visitor-limits.jpg'),
+                  NetworkImage('https://keepcalmandcurryon.files.wordpress.com/2012/10/qutb-minar.jpg'),
+                  NetworkImage('http://www.palacesonwheels.com/blog/wp-content/uploads/2013/11/HawaMahal-Jaipur.jpg'),
+                ],
               ),
-            )
+            ),
           ],
         ),
       ),
