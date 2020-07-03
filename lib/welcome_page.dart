@@ -25,7 +25,8 @@ class WelcomePage extends StatelessWidget {
         actions: <Widget>[
           PopupMenuButton(
             icon: Icon(Icons.menu),
-            itemBuilder: (context) => [
+            itemBuilder: (context) =>
+            [
               PopupMenuItem(
                 child: Row(
                     children: [
@@ -55,8 +56,8 @@ class WelcomePage extends StatelessWidget {
             Text(
               "Travel + Assist",
               style: TextStyle(
-                fontSize: 55,
-                color: Colors.blue,
+                fontSize: 60,
+                color: Colors.amber,
                 fontFamily: 'Yellowtail',
               ),
             ),
@@ -76,7 +77,7 @@ class WelcomePage extends StatelessWidget {
               height: 250,
               margin: EdgeInsets.all(20.0),
               child: Carousel(
-                boxFit: BoxFit.fill,
+                boxFit: BoxFit.contain,
                 autoplay: true,
                 animationCurve: Curves.fastOutSlowIn,
                 animationDuration: Duration(milliseconds: 1000),
@@ -88,9 +89,15 @@ class WelcomePage extends StatelessWidget {
                 showIndicator: true,
                 indicatorBgPadding: 7.0,
                 images: [
-                  NetworkImage('https://lonelyplanetwpnews.imgix.net/2018/01/taj-mahal-visitor-limits.jpg'),
-                  NetworkImage('https://keepcalmandcurryon.files.wordpress.com/2012/10/qutb-minar.jpg'),
-                  NetworkImage('http://www.palacesonwheels.com/blog/wp-content/uploads/2013/11/HawaMahal-Jaipur.jpg'),
+                  NetworkImage('https://www.itsfrontporch.com/wp-content/uploads/6359524176194484221446729975_travel-01.jpg'),
+                  NetworkImage(
+                      'https://lonelyplanetwpnews.imgix.net/2018/01/taj-mahal-visitor-limits.jpg'),
+                  NetworkImage(
+                      'https://keepcalmandcurryon.files.wordpress.com/2012/10/qutb-minar.jpg'),
+                  NetworkImage(
+                      'http://www.palacesonwheels.com/blog/wp-content/uploads/2013/11/HawaMahal-Jaipur.jpg'),
+                  NetworkImage(
+                      'https://www.india-briefing.com/news/wp-content/uploads/2018/04/India-Brefing-India%E2%80%99s-Tourism-Sector-Dynamic-Market-Sees-New-Verticals-Growing-FDI.jpg'),
                 ],
               ),
             ),
@@ -101,8 +108,9 @@ class WelcomePage extends StatelessWidget {
         onPressed: () {
           goToHomePage();
         },
-        label: Text('Go back Home'),
+        label: Text('Go back'),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

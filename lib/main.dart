@@ -7,6 +7,7 @@ void main()
 {
   goToHomePage();
 }
+
 void goToHomePage() => runApp(MaterialApp(
   home: MyHomePage(),
   debugShowCheckedModeBanner: false,
