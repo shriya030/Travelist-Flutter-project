@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'main.dart';
 import 'transport.dart';
 import 'package:carousel_pro/carousel_pro.dart';
+import 'search_destination.dart';
 
 void goToWelcomePage() => runApp(MaterialApp(
   home: WelcomePage(),
@@ -14,10 +15,11 @@ class WelcomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-            'TRAVELIST',
+            'Travelist',
             style: TextStyle(
-              fontSize: 60,
+              fontSize: 40,
               color: Colors.black,
+              fontFamily: 'Yellowtail',
             )
         ),
         centerTitle: true,
@@ -56,14 +58,14 @@ class WelcomePage extends StatelessWidget {
             Text(
               "Travel + Assist",
               style: TextStyle(
-                fontSize: 60,
+                fontSize: 40,
                 color: Colors.amber,
                 fontFamily: 'Yellowtail',
               ),
             ),
             RaisedButton(
               onPressed: () {
-                goToTransportPage();
+                searchDestination();
               },
               child: Text(
                 'Start Planning',
