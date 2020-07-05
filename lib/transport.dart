@@ -31,13 +31,6 @@ class ChooseTransportPage extends StatelessWidget {
           centerTitle: true,
           backgroundColor: Colors.blueGrey,
         ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            goToWelcomePage();
-          },
-          label: Text('Go back'),
-          icon: Icon(Icons.arrow_back),
-        ),
         body: Container(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -133,6 +126,20 @@ class ChooseTransportPage extends StatelessWidget {
                         color: Colors.transparent,
                       )
                     ],
+                  ),
+                ),
+                Container(
+                  child: RaisedButton(
+                    onPressed: () {
+                      goToWelcomePage();
+                    },
+                    color: Colors.blueGrey,
+                    child: Text(
+                      'Go Back',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
                   ),
                 ),
               ],

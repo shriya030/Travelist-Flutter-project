@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
-import 'transport.dart';
 import 'package:carousel_pro/carousel_pro.dart';
-import 'about_us.dart';
+import 'search_destination.dart';
 
 void goToWelcomePage() => runApp(MaterialApp(
   home: WelcomePage(),
@@ -15,20 +14,21 @@ class WelcomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-            'TRAVELIST',
+            'Travelist',
             style: TextStyle(
-              fontSize: 50,
+              fontSize: 60,
               color: Colors.black,
-              fontFamily: 'OpenSans',
+              fontFamily: 'Satisfy',
             )
         ),
         centerTitle: true,
         elevation: 50.0,
+        backgroundColor: Colors.blueGrey,
         leading: Column(
           children: <Widget>[
             PopupMenuButton(
               icon: Icon(
-                  Icons.menu,
+                Icons.menu,
                 size: 40,
               ),
               itemBuilder: (context) =>
@@ -38,39 +38,30 @@ class WelcomePage extends StatelessWidget {
                     children: [
                       Icon(Icons.settings, color: Colors.blue),
                       Text(" Settings"),
-                    ]
-                ),
-              ),
-                PopupMenuItem(
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.account_circle,
-                        color: Colors.deepOrange
-                      ),
-                      Text(" About Us"),
                     ],
                   ),
                 ),
                 PopupMenuItem(
                   child: Row(
                     children: [
-                      Icon(
-                        Icons.call,
-                        color: Colors.deepOrange
-                      ),
-                      Text(" Contact Us"),
+                      Icon(Icons.account_box, color: Colors.deepOrange),
+                      Text("About Us"),
                     ],
                   ),
                 ),
                 PopupMenuItem(
                   child: Row(
-                    children: [
-                      Icon(
-                         Icons.label_important,
-                         color: Colors.deepOrange
-                      ),
-                      Text(" Importance of Tourism"),
+                    children: <Widget>[
+                      Icon(Icons.call, color: Colors.deepOrange,),
+                      Text(' Contact Us'),
+                    ],
+                  ),
+                ),
+                PopupMenuItem(
+                  child: Row(
+                    children: <Widget>[
+                      Icon(Icons.label_important, color: Colors.deepOrange,),
+                      Text(' Importance of Tourism'),
                     ],
                   ),
                 ),
@@ -79,8 +70,8 @@ class WelcomePage extends StatelessWidget {
           ],
         ),
       ),
-      body: Stack(
-        children: <Widget>[
+      body:   Stack(
+        children: [
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
@@ -91,7 +82,7 @@ class WelcomePage extends StatelessWidget {
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
+            children: <Widget>[
               Text(
                 "Travel + Assist",
                 style: TextStyle(
@@ -102,7 +93,6 @@ class WelcomePage extends StatelessWidget {
               ),
               Text(
                 '  The Pocket Travel Guide just for you',
-                textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 30,
                   color: Colors.black,
@@ -111,7 +101,7 @@ class WelcomePage extends StatelessWidget {
               ),
               RaisedButton(
                 onPressed: () {
-                  goToTransportPage();
+                  searchDestination();
                 },
                 color: Colors.lightBlueAccent,
                 child: Text(
@@ -123,7 +113,7 @@ class WelcomePage extends StatelessWidget {
               ),
               Container(
                 width: 350,
-                height: 350,
+                height: 250,
                 margin: EdgeInsets.all(20.0),
                 child: Carousel(
                   boxFit: BoxFit.contain,
@@ -134,11 +124,9 @@ class WelcomePage extends StatelessWidget {
                   dotIncreaseSize: 1.0,
                   dotBgColor: Colors.transparent,
                   dotColor: Colors.transparent,
-                  //dotPosition: DotPosition.bottomCenter,
                   showIndicator: true,
                   indicatorBgPadding: 7.0,
                   images: [
-                    //NetworkImage('https://www.itsfrontporch.com/wp-content/uploads/6359524176194484221446729975_travel-01.jpg'),
                     Image.asset('assets/images/hyd1.JPG'),
                     Image.asset('assets/images/jaipur1.JPG'),
                     Image.asset('assets/images/jimcorbett.jpeg'),
@@ -151,8 +139,8 @@ class WelcomePage extends StatelessWidget {
               ),
             ],
           ),
-          ],
-        ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           goToHomePage();

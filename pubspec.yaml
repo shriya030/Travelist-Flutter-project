@@ -48,10 +48,16 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
-
+  assets:
+    - assets/images/hyd1.JPG
+    - assets/images/jaipur1.JPG
+    - assets/images/jimcorbett.jpeg
+    - assets/images/unknown1.JPG
+    - assets/images/cover.jpg
+    - assets/images/welcome_page_bkgd1.jpg
+    - assets/images/welcome_page_bkgd2.jpg
+    - assets/images/welcome_page_bkgd3.jpg
+    - assets/images/gradient_bkgd.jpg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
@@ -70,9 +76,12 @@ flutter:
     - family: DancingScript
       fonts:
         - asset: assets/fonts/DancingScript-Regular.ttf
-    #- family: OpenSans
-    #  fonts:
-    #    - asset: assets/fonts/OpenSans/Semi-Bold.ttf
+    - family: OpenSans
+      fonts:
+        - asset: assets/fonts/OpenSans-SemiBold.ttf
+    - family: Satisfy
+      fonts:
+        - asset: assets/fonts/Satisfy-Regular.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

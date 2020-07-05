@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'welcome_page.dart';
-import 'package:carousel_pro/carousel_pro.dart';
 
 void main()
 {
@@ -23,8 +22,7 @@ class MyHomePage extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                  image: NetworkImage(
-                      'https://mymodernmet.com/wp/wp-content/uploads/2018/04/michael-t-meyers-travel-photography-1.jpg'),
+                  image: AssetImage('assets/images/cover.jpg'),
                   fit: BoxFit.cover
               ),
             ),
