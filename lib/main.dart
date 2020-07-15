@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'welcome_page.dart';
 
@@ -29,32 +28,32 @@ class MyHomePage extends StatelessWidget {
           ),
           Center(
             child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Travelist',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 80,
-                  fontFamily: 'Yellowtail',
-                ),
-              ),
-              Text(
-                'Plan your trips with us',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 40,
-                  fontFamily: 'DancingScript',
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Travelist',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 80,
+                    fontFamily: 'Yellowtail',
                   ),
-              ),
-            ],
+                ),
+                Text(
+                  'Plan your trips with us',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 40,
+                    fontFamily: 'DancingScript',
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
@@ -62,13 +61,14 @@ class MyHomePage extends StatelessWidget {
         },
         icon: Icon(Icons.airplanemode_active),
         label: Text(
-            "Start your journey",
-            //style: TextStyle(
-            //  fontFamily: 'OpenSans',
-            ),
+          "Start your journey",
+          style: TextStyle(
+            fontFamily: 'OpenSans',
+          ),
         ),
         backgroundColor: Colors.blueGrey,
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      );
+    );
   }
 }
