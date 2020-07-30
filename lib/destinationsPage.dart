@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/explore.dart';
-import 'package:my_app/eachdest.dart';
+import 'package:flutter_app/explore.dart';
+import 'package:flutter_app/eachdest.dart';
 
 class DestinationPage extends StatelessWidget {
   final Cities _city;

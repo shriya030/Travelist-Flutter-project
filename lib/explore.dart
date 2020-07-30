@@ -1,80 +1,114 @@
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
-import 'package:my_app/connectionPage.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
+import 'package:flappy_search_bar/flappy_search_bar.dart';
 
-void main() => runApp(ExplorePage());
+import 'connectionPage.dart';
 
-class ExplorePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: TheMainExplorePage(),
+void main() => runApp(MaterialApp(
+      home: ExplorePage(),
       debugShowCheckedModeBanner: false,
-    );
-  }
-}
+    ));
 
-class TheMainExplorePage extends StatefulWidget {
+class ExplorePage extends StatefulWidget {
   @override
-  _TheMainExplorePageState createState() => _TheMainExplorePageState();
+  _ExplorePageState createState() => _ExplorePageState();
 }
 
-class _TheMainExplorePageState extends State<TheMainExplorePage> {
+class _ExplorePageState extends State<ExplorePage> {
+  final SearchBarController<States> _searchBarController =
+      SearchBarController();
+  bool isReplay = false;
+
   Future<List<States>> _getStates() async {
     var data = await http
-        .get("https://next.json-generator.com/api/json/get/Ny63yxm1K");
+        .get("https://next.json-generator.com/api/json/get/EyT3LJqeF");
+
+    List<dynamic> jsonData = jsonDecode(data.body);
+
+    List<States> states =
+        jsonData.map((jsonData) => States.fromJson(jsonData)).toList();
+    return states;
+  }
+
+  Future<List<States>> _getFiltered(String text) async {
+    var data = await http
+        .get("https://next.json-generator.com/api/json/get/EyT3LJqeF");
 
     List<dynamic> jsonData = jsonDecode(data.body);
 
     List<States> states =
         jsonData.map((jsonData) => States.fromJson(jsonData)).toList();
 
-    return states;
+    List<States> _filtered = states
+        .where((element) =>
+            element.state.toLowerCase().contains(text.toLowerCase()))
+        .toList();
+    print(_filtered);
+    return _filtered;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Select a state ... "),
-      ),
-      body: Container(
-        child: FutureBuilder(
-          future: _getStates(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.data == null) {
-              return Container(
-                child: Center(child: Text("Loading .... ")),
-              );
-            } else {
-              return ListView.builder(
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Card(
-                      color: Colors.grey[200],
-                      elevation: 20.0,
-                      child: ListTile(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (context) =>
-                                      ConnectionPage(snapshot.data[index])));
-                        },
-                        title: Text(
-                          snapshot.data[index].state,
-                          style: TextStyle(
-                            fontSize: 20.0,
+      body: SafeArea(
+        child: SearchBar<States>(
+            searchBarPadding: EdgeInsets.symmetric(horizontal: 10.0),
+            headerPadding: EdgeInsets.symmetric(horizontal: 10.0),
+            listPadding: EdgeInsets.symmetric(horizontal: 10.0),
+            onSearch: _getFiltered,
+            hintText: "Search for a state ....",
+            searchBarController: _searchBarController,
+            minimumChars: 1,
+            placeHolder: FutureBuilder(
+              future: _getStates(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.data == null) {
+                  return Container(
+                    child: Center(child: Text("Loading .... ")),
+                  );
+                } else {
+                  return ListView.builder(
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Card(
+                          color: Colors.grey[200],
+                          elevation: 20.0,
+                          child: ListTile(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                      builder: (context) => ConnectionPage(
+                                          snapshot.data[index])));
+                            },
+                            title: Text(
+                              snapshot.data[index].state,
+                              style: TextStyle(
+                                fontSize: 20.0,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    );
+                        );
+                      });
+                }
+              },
+            ),
+            loader: Center(
+                child: Container(
+              child: Text("Loading ..."),
+            )),
+            onItemFound: (States _state, int index) {
+              return ListTile(
+                  title: Text(_state.state),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => ConnectionPage(_state)));
                   });
-            }
-          },
-        ),
+            }),
       ),
     );
   }
@@ -135,18 +169,28 @@ class Cities {
 class Destinations {
   String name;
   String description;
+  String location;
+  String timings;
+  String tickets;
 
-  Destinations({this.name, this.description});
+  Destinations(
+      {this.name, this.description, this.location, this.timings, this.tickets});
 
   Destinations.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     description = json['description'];
+    location = json['location'];
+    timings = json['timings'];
+    tickets = json['tickets'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['name'] = this.name;
     data['description'] = this.description;
+    data['location'] = this.location;
+    data['timings'] = this.timings;
+    data['tickets'] = this.tickets;
     return data;
   }
 }
