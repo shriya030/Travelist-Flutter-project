@@ -56,17 +56,6 @@ flutter:
   #   - images/a_dot_ham.jpeg
 
   assets:
-    - assets/images/hyd1.JPG
-    - assets/images/jaipur1.JPG
-    - assets/images/jimcorbett.jpeg
-    - assets/images/unknown1.JPG
-    - assets/images/cover.jpg
-    - assets/images/welcome_page_bkgd1.jpg
-    - assets/images/welcome_page_bkgd2.jpg
-    - assets/images/welcome_page_bkgd3.jpg
-    - assets/images/gradient_bkgd.jpg
-    - assets/images/andaman1.jpg
-    - assets/images/logo1.png
     - assets/images/FinalLogo.png
     
   # An image asset can refer to one or more resolution-specific "variants", see

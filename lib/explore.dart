@@ -1,15 +1,15 @@
 import 'dart:convert';
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flappy_search_bar/flappy_search_bar.dart';
-
 import 'connectionPage.dart';
 
 void main() => runApp(MaterialApp(
-      home: ExplorePage(),
-      debugShowCheckedModeBanner: false,
-    ));
+  home: ExplorePage(),
+  debugShowCheckedModeBanner: false,
+));
 
 class ExplorePage extends StatefulWidget {
   @override
@@ -18,32 +18,32 @@ class ExplorePage extends StatefulWidget {
 
 class _ExplorePageState extends State<ExplorePage> {
   final SearchBarController<States> _searchBarController =
-      SearchBarController();
+  SearchBarController();
   bool isReplay = false;
 
   Future<List<States>> _getStates() async {
     var data = await http
-        .get("https://next.json-generator.com/api/json/get/EyT3LJqeF");
+        .get("http://www.json-generator.com/api/json/get/cgfTEQpTtu?indent=2");
 
     List<dynamic> jsonData = jsonDecode(data.body);
 
     List<States> states =
-        jsonData.map((jsonData) => States.fromJson(jsonData)).toList();
+    jsonData.map((jsonData) => States.fromJson(jsonData)).toList();
     return states;
   }
 
   Future<List<States>> _getFiltered(String text) async {
     var data = await http
-        .get("https://next.json-generator.com/api/json/get/EyT3LJqeF");
+        .get("http://www.json-generator.com/api/json/get/cgfTEQpTtu?indent=2");
 
     List<dynamic> jsonData = jsonDecode(data.body);
 
     List<States> states =
-        jsonData.map((jsonData) => States.fromJson(jsonData)).toList();
+    jsonData.map((jsonData) => States.fromJson(jsonData)).toList();
 
     List<States> _filtered = states
         .where((element) =>
-            element.state.toLowerCase().contains(text.toLowerCase()))
+        element.state.toLowerCase().startsWith(text.toLowerCase()))
         .toList();
     print(_filtered);
     return _filtered;
@@ -62,20 +62,24 @@ class _ExplorePageState extends State<ExplorePage> {
             searchBarController: _searchBarController,
             minimumChars: 1,
             placeHolder: FutureBuilder(
-              future: _getStates(),
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.data == null) {
-                  return Container(
-                    child: Center(child: Text("Loading .... ")),
-                  );
-                } else {
-                  return ListView.builder(
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Card(
-                          color: Colors.grey[200],
-                          elevation: 20.0,
-                          child: ListTile(
+                future: _getStates(),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.data == null) {
+                    return Center(
+                        child: Container(
+                          child: Text("Loading ......"),
+                        ));
+                  } else {
+                    return ListView.builder(
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return ListTile(
+                            title: Text(
+                              snapshot.data[index].state,
+                              style: TextStyle(
+                                fontSize: 20.0,
+                              ),
+                            ),
                             onTap: () {
                               Navigator.push(
                                   context,
@@ -83,25 +87,23 @@ class _ExplorePageState extends State<ExplorePage> {
                                       builder: (context) => ConnectionPage(
                                           snapshot.data[index])));
                             },
-                            title: Text(
-                              snapshot.data[index].state,
-                              style: TextStyle(
-                                fontSize: 20.0,
-                              ),
-                            ),
-                          ),
-                        );
-                      });
-                }
-              },
-            ),
+                          );
+                        });
+                  }
+                }),
             loader: Center(
-                child: Container(
-              child: Text("Loading ..."),
-            )),
+              child: Container(child: Text("Searching .....")),
+            ),
             onItemFound: (States _state, int index) {
               return ListTile(
-                  title: Text(_state.state),
+                  title: Text(
+                    _state.state,
+                    style: TextStyle(
+                      //fontWeight: FontWeight.bold,
+                      fontSize: 20.0,
+                      color: Colors.black,
+                    ),
+                  ),
                   onTap: () {
                     Navigator.push(
                         context,
