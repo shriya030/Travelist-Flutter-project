@@ -7,9 +7,11 @@ import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'connectionPage.dart';
 
 void main() => runApp(MaterialApp(
-  home: ExplorePage(),
-  debugShowCheckedModeBanner: false,
-));
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      home: ExplorePage(),
+      debugShowCheckedModeBanner: false,
+    ));
 
 class ExplorePage extends StatefulWidget {
   @override
@@ -18,7 +20,7 @@ class ExplorePage extends StatefulWidget {
 
 class _ExplorePageState extends State<ExplorePage> {
   final SearchBarController<States> _searchBarController =
-  SearchBarController();
+      SearchBarController();
   bool isReplay = false;
 
   Future<List<States>> _getStates() async {
@@ -28,7 +30,7 @@ class _ExplorePageState extends State<ExplorePage> {
     List<dynamic> jsonData = jsonDecode(data.body);
 
     List<States> states =
-    jsonData.map((jsonData) => States.fromJson(jsonData)).toList();
+        jsonData.map((jsonData) => States.fromJson(jsonData)).toList();
     return states;
   }
 
@@ -39,11 +41,11 @@ class _ExplorePageState extends State<ExplorePage> {
     List<dynamic> jsonData = jsonDecode(data.body);
 
     List<States> states =
-    jsonData.map((jsonData) => States.fromJson(jsonData)).toList();
+        jsonData.map((jsonData) => States.fromJson(jsonData)).toList();
 
     List<States> _filtered = states
         .where((element) =>
-        element.state.toLowerCase().startsWith(text.toLowerCase()))
+            element.state.toLowerCase().startsWith(text.toLowerCase()))
         .toList();
     print(_filtered);
     return _filtered;
@@ -53,64 +55,192 @@ class _ExplorePageState extends State<ExplorePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SearchBar<States>(
-            searchBarPadding: EdgeInsets.symmetric(horizontal: 10.0),
-            headerPadding: EdgeInsets.symmetric(horizontal: 10.0),
-            listPadding: EdgeInsets.symmetric(horizontal: 10.0),
-            onSearch: _getFiltered,
-            hintText: "Search for a state ....",
-            searchBarController: _searchBarController,
-            minimumChars: 1,
-            placeHolder: FutureBuilder(
-                future: _getStates(),
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if (snapshot.data == null) {
-                    return Center(
-                        child: Container(
-                          child: Text("Loading ......"),
-                        ));
-                  } else {
-                    return ListView.builder(
-                        itemCount: snapshot.data.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return ListTile(
-                            title: Text(
-                              snapshot.data[index].state,
-                              style: TextStyle(
-                                fontSize: 20.0,
-                              ),
-                            ),
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  new MaterialPageRoute(
-                                      builder: (context) => ConnectionPage(
-                                          snapshot.data[index])));
-                            },
-                          );
-                        });
-                  }
-                }),
-            loader: Center(
-              child: Container(child: Text("Searching .....")),
+        child: Column(
+          children: [
+            ListTile(
+              title: Text(
+                "Explore",
+                style: TextStyle(
+                  fontSize: 30.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              trailing: IconButton(
+                color: Colors.black,
+                icon: Icon(Icons.search),
+                iconSize: 30.0,
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (context) => _buildSearchBar()));
+                },
+              ),
             ),
-            onItemFound: (States _state, int index) {
-              return ListTile(
-                  title: Text(
-                    _state.state,
+            Row(
+              children: [
+                Container(
+                  //margin: EdgeInsets.only(left: 10.0, right: 10.0),
+                  height: 10.0,
+                  width: 68.0,
+                  color: Colors.yellow,
+                ),
+                Container(
+                  //margin: EdgeInsets.only(left: 10.0, right: 10.0),
+                  height: 10.0,
+                  width: 68.0,
+                  color: Colors.orange,
+                ),
+                Container(
+                  //margin: EdgeInsets.only(left: 10.0, right: 10.0),
+                  height: 10.0,
+                  width: 68.0,
+                  color: Colors.red,
+                ),
+                Container(
+                  //margin: EdgeInsets.only(left: 10.0, right: 10.0),
+                  height: 10.0,
+                  width: 69.0,
+                  color: Colors.green,
+                ),
+                Container(
+                  //margin: EdgeInsets.only(left: 10.0, right: 10.0),
+                  height: 10.0,
+                  width: 69.0,
+                  color: Colors.blue,
+                ),
+                Container(
+                  //margin: EdgeInsets.only(left: 10.0, right: 10.0),
+                  height: 10.0,
+                  width: 69.0,
+                  color: Colors.purple,
+                ),
+              ],
+            ),
+            Expanded(
+              child: FutureBuilder(
+                  future: _getStates(),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.data == null) {
+                      return Center(
+                          child: Container(
+                        child: Text("Loading ......"),
+                      ));
+                    } else {
+                      return GridView.builder(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  mainAxisSpacing: 2,
+                                  crossAxisSpacing: 2),
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Container(
+                              padding: EdgeInsets.all(10.0),
+                              margin: EdgeInsets.all(3.0),
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Colors.indigo[300],
+                                    Colors.indigo[700]
+                                  ],
+                                ),
+                                //color: Colors.indigo[800],
+                                shape: BoxShape.rectangle,
+                                //borderRadius:
+                                //    BorderRadius.all(Radius.circular(30.0)),
+                              ),
+                              child: FlatButton(
+                                color: Colors.transparent,
+                                child: Text(
+                                  snapshot.data[index].state,
+                                  style: TextStyle(
+                                    fontSize: 20.0,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      new MaterialPageRoute(
+                                          builder: (context) => ConnectionPage(
+                                              snapshot.data[index])));
+                                },
+                              ),
+                            );
+                          });
+                    }
+                  }),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSearchBar() {
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.only(right: 10.0),
+              alignment: Alignment.topRight,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    "Go Back",
                     style: TextStyle(
-                      //fontWeight: FontWeight.bold,
                       fontSize: 20.0,
-                      color: Colors.black,
+                      fontStyle: FontStyle.italic,
                     ),
                   ),
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (context) => ConnectionPage(_state)));
-                  });
-            }),
+                  IconButton(
+                    iconSize: 35.0,
+                    color: Colors.greenAccent[700],
+                    icon: Icon(Icons.clear),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: SearchBar<States>(
+                  searchBarPadding: EdgeInsets.symmetric(horizontal: 10.0),
+                  headerPadding: EdgeInsets.symmetric(horizontal: 20.0),
+                  listPadding: EdgeInsets.symmetric(horizontal: 10.0),
+                  onSearch: _getFiltered,
+                  hintText: "Search for a state ....",
+                  searchBarController: _searchBarController,
+                  minimumChars: 1,
+                  loader: Center(
+                    child: Container(child: Text("Searching .....")),
+                  ),
+                  onItemFound: (States _state, int index) {
+                    return ListTile(
+                        title: Text(
+                          _state.state,
+                          style: TextStyle(
+                            //fontWeight: FontWeight.bold,
+                            fontSize: 20.0,
+                            color: Colors.black,
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              new MaterialPageRoute(
+                                  builder: (context) =>
+                                      ConnectionPage(_state)));
+                        });
+                  }),
+            ),
+          ],
+        ),
       ),
     );
   }

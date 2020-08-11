@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/homeInfoPage.dart';
+//import 'eachdest.dart';
 import 'explore.dart';
 import 'favorites.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
@@ -31,7 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return [
       InfoPage(),
       ExplorePage(),
-      FavoritesPage(),
+      TheFavoritesPage(),
     ];
   }
 
