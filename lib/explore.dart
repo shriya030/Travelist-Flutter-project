@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'connectionPage.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() => runApp(MaterialApp(
       theme: ThemeData.light(),
@@ -25,7 +26,7 @@ class _ExplorePageState extends State<ExplorePage> {
 
   Future<List<States>> _getStates() async {
     var data = await http
-        .get("http://www.json-generator.com/api/json/get/cgfTEQpTtu?indent=2");
+        .get("https://next.json-generator.com/api/json/get/Ny63yxm1K");
 
     List<dynamic> jsonData = jsonDecode(data.body);
 
@@ -36,7 +37,7 @@ class _ExplorePageState extends State<ExplorePage> {
 
   Future<List<States>> _getFiltered(String text) async {
     var data = await http
-        .get("http://www.json-generator.com/api/json/get/cgfTEQpTtu?indent=2");
+        .get("https://next.json-generator.com/api/json/get/Ny63yxm1K");
 
     List<dynamic> jsonData = jsonDecode(data.body);
 
@@ -60,9 +61,11 @@ class _ExplorePageState extends State<ExplorePage> {
             ListTile(
               title: Text(
                 "Explore",
-                style: TextStyle(
-                  fontSize: 30.0,
-                  fontWeight: FontWeight.bold,
+                style: GoogleFonts.openSans(
+                  textStyle: TextStyle(
+                    fontSize: 30.0,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               trailing: IconButton(
@@ -82,37 +85,43 @@ class _ExplorePageState extends State<ExplorePage> {
                 Container(
                   //margin: EdgeInsets.only(left: 10.0, right: 10.0),
                   height: 10.0,
-                  width: 68.0,
-                  color: Colors.yellow,
-                ),
-                Container(
-                  //margin: EdgeInsets.only(left: 10.0, right: 10.0),
-                  height: 10.0,
-                  width: 68.0,
-                  color: Colors.orange,
-                ),
-                Container(
-                  //margin: EdgeInsets.only(left: 10.0, right: 10.0),
-                  height: 10.0,
-                  width: 68.0,
+                  width: MediaQuery.of(context).size.width / 7,
                   color: Colors.red,
                 ),
                 Container(
                   //margin: EdgeInsets.only(left: 10.0, right: 10.0),
                   height: 10.0,
-                  width: 69.0,
+                  width: MediaQuery.of(context).size.width / 7,
+                  color: Colors.orange,
+                ),
+                Container(
+                  //margin: EdgeInsets.only(left: 10.0, right: 10.0),
+                  height: 10.0,
+                  width: MediaQuery.of(context).size.width / 7,
+                  color: Colors.yellow,
+                ),
+                Container(
+                  //margin: EdgeInsets.only(left: 10.0, right: 10.0),
+                  height: 10.0,
+                  width: MediaQuery.of(context).size.width / 7,
                   color: Colors.green,
                 ),
                 Container(
                   //margin: EdgeInsets.only(left: 10.0, right: 10.0),
                   height: 10.0,
-                  width: 69.0,
+                  width: MediaQuery.of(context).size.width / 7,
                   color: Colors.blue,
                 ),
                 Container(
                   //margin: EdgeInsets.only(left: 10.0, right: 10.0),
                   height: 10.0,
-                  width: 69.0,
+                  width: MediaQuery.of(context).size.width / 7,
+                  color: Colors.indigo,
+                ),
+                Container(
+                  //margin: EdgeInsets.only(left: 10.0, right: 10.0),
+                  height: 10.0,
+                  width: MediaQuery.of(context).size.width / 7,
                   color: Colors.purple,
                 ),
               ],
@@ -136,14 +145,15 @@ class _ExplorePageState extends State<ExplorePage> {
                           itemCount: snapshot.data.length,
                           itemBuilder: (BuildContext context, int index) {
                             return Container(
+                              //height: 300.0,
+                              //width: MediaQuery.of(context).size.width / 2,
                               padding: EdgeInsets.all(10.0),
                               margin: EdgeInsets.all(3.0),
                               decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Colors.indigo[300],
-                                    Colors.indigo[700]
-                                  ],
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image:
+                                      NetworkImage(snapshot.data[index].image),
                                 ),
                                 //color: Colors.indigo[800],
                                 shape: BoxShape.rectangle,
@@ -156,6 +166,7 @@ class _ExplorePageState extends State<ExplorePage> {
                                   snapshot.data[index].state,
                                   style: TextStyle(
                                     fontSize: 20.0,
+                                    color: Colors.white,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
@@ -248,12 +259,14 @@ class _ExplorePageState extends State<ExplorePage> {
 
 class States {
   String state;
+  String image;
   List<Cities> cities;
 
   States({this.state, this.cities});
 
   States.fromJson(Map<String, dynamic> json) {
     state = json['state'];
+    image = json['image'];
     if (json['cities'] != null) {
       cities = new List<Cities>();
       json['cities'].forEach((v) {
@@ -265,6 +278,7 @@ class States {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['state'] = this.state;
+    data['image'] = this.image;
     if (this.cities != null) {
       data['cities'] = this.cities.map((v) => v.toJson()).toList();
     }
@@ -274,12 +288,14 @@ class States {
 
 class Cities {
   String name;
+  String image;
   List<Destinations> destinations;
 
-  Cities({this.name, this.destinations});
+  Cities({this.name, this.image, this.destinations});
 
   Cities.fromJson(Map<String, dynamic> json) {
     name = json['name'];
+    image = json['image'];
     if (json['destinations'] != null) {
       destinations = new List<Destinations>();
       json['destinations'].forEach((v) {
@@ -291,6 +307,7 @@ class Cities {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['name'] = this.name;
+    data['image'] = this.image;
     if (this.destinations != null) {
       data['destinations'] = this.destinations.map((v) => v.toJson()).toList();
     }
@@ -300,16 +317,23 @@ class Cities {
 
 class Destinations {
   String name;
+  String image;
   String description;
   String location;
   String timings;
   String tickets;
 
   Destinations(
-      {this.name, this.description, this.location, this.timings, this.tickets});
+      {this.name,
+      this.image,
+      this.description,
+      this.location,
+      this.timings,
+      this.tickets});
 
   Destinations.fromJson(Map<String, dynamic> json) {
     name = json['name'];
+    image = json['image'];
     description = json['description'];
     location = json['location'];
     timings = json['timings'];
@@ -319,6 +343,7 @@ class Destinations {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['name'] = this.name;
+    data['image'] = this.image;
     data['description'] = this.description;
     data['location'] = this.location;
     data['timings'] = this.timings;

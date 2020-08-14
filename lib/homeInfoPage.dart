@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() => runApp(MaterialApp(
-  home: InfoPage(),
-  debugShowCheckedModeBanner: false,
-));
+      home: InfoPage(),
+      debugShowCheckedModeBanner: false,
+    ));
 
 class LocationItemModel {
   final String image;
@@ -22,32 +23,32 @@ class _InfoPageState extends State<InfoPage> {
   final List<LocationItemModel> locations = [
     LocationItemModel(
         image:
-        "https://images.pexels.com/photos/1657984/pexels-photo-1657984.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-        name: "Location"),
+            "https://images.pexels.com/photos/1657984/pexels-photo-1657984.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        name: "Hill Stations"),
     LocationItemModel(
         image:
-        "https://images.pexels.com/photos/2474689/pexels-photo-2474689.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-        name: "Location"),
+            "https://images.unsplash.com/photo-1580223530509-849e0ad583ca?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=600&q=60",
+        name: "Beaches"),
     LocationItemModel(
         image:
-        "https://images.pexels.com/photos/1694621/pexels-photo-1694621.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-        name: "Location"),
+            "https://images.pexels.com/photos/1694621/pexels-photo-1694621.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        name: "Religious Places"),
     LocationItemModel(
         image:
-        "https://images.pexels.com/photos/2166553/pexels-photo-2166553.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-        name: "Location"),
+            "https://images.unsplash.com/photo-1556763298-45dd094af54e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=600&q=60",
+        name: "Historical Monuments"),
     LocationItemModel(
         image:
-        "https://images.pexels.com/photos/415708/pexels-photo-415708.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-        name: "Location"),
+            "https://images.unsplash.com/photo-1573725342230-178c824a10f2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=600&q=60",
+        name: "Wildlife Parks"),
     LocationItemModel(
         image:
-        "https://images.pexels.com/photos/1603650/pexels-photo-1603650.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-        name: "Location"),
+            "https://images.unsplash.com/photo-1523224949444-170258978eef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=600&q=60",
+        name: "Water Falls"),
     LocationItemModel(
         image:
-        "https://images.pexels.com/photos/1098460/pexels-photo-1098460.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-        name: "Location"),
+            "https://images.unsplash.com/photo-1511174511562-5f7f18b874f8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=600&q=60",
+        name: "Educational"),
   ];
 
   @override
@@ -91,7 +92,7 @@ class _InfoPageState extends State<InfoPage> {
                           height: 10,
                         ),
                         Text(
-                          "Travel\nIndia",
+                          "Discover\nIndia",
                           style: TextStyle(
                             fontSize: 60,
                             color: Colors.white,
@@ -164,10 +165,15 @@ class _InfoPageState extends State<InfoPage> {
                                           height: 170,
                                           fit: BoxFit.cover,
                                           image:
-                                          NetworkImage(locations[i].image),
+                                              NetworkImage(locations[i].image),
                                         ),
                                       ),
-                                      Text(locations[i].name),
+                                      Text(
+                                        locations[i].name,
+                                        style: TextStyle(
+                                          fontSize: 17.0,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),

@@ -31,6 +31,8 @@ dependencies:
   firebase_core: ^0.4.5
   material_design_icons_flutter: ^4.0.5345
   cloud_firestore: ^0.13.7
+  google_fonts: ^1.1.0
+  url_launcher: ^5.5.0
   flutter:
     sdk: flutter
 
@@ -73,19 +75,19 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  fonts:
-    - family: Yellowtail
-      fonts:
-        - asset: assets/fonts/Yellowtail-Regular.ttf
-    - family: DancingScript
-      fonts:
-        - asset: assets/fonts/DancingScript-Regular.ttf
-    - family: OpenSans
-      fonts:
-        - asset: assets/fonts/OpenSans-SemiBold.ttf
-    - family: Satisfy
-      fonts:
-        - asset: assets/fonts/Satisfy-Regular.ttf
+  #fonts:
+  #  - family: Yellowtail
+  #    fonts:
+  #      - asset: assets/fonts/Yellowtail-Regular.ttf
+  #  - family: DancingScript
+  #    fonts:
+  #      - asset: assets/fonts/DancingScript-Regular.ttf
+  #  - family: OpenSans
+  #    fonts:
+  #      - asset: assets/fonts/OpenSans-SemiBold.ttf
+  #  - family: Satisfy
+  #   fonts:
+  #     - asset: assets/fonts/Satisfy-Regular.ttf
 
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

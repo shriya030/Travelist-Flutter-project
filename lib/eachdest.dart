@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/explore.dart';
+import 'explore.dart';
+//import 'package:url_launcher/url_launcher.dart';
 import 'package:firebase_database/firebase_database.dart';
 //import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -42,92 +43,202 @@ class _AttractionPageState extends State<AttractionPage> {
 
   @override
   Widget build(BuildContext context) {
+    //launchURL() {
+    //  launch(widget._dest.location);
+    //}
+
     return Scaffold(
-      body: SafeArea(
-        child: Stack(
-          children: [
-            Container(
-              alignment: Alignment.center,
-              height: 150.0,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Colors.purple[500], Colors.blue[500]],
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  IconButton(
-                    //padding: EdgeInsets.only(right: 50.0),
-                    alignment: Alignment.topLeft,
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(Icons.arrow_back),
-                  ),
-                  Text(
-                    widget._dest.name,
-                    style:
-                        TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-              width: MediaQuery.of(context).size.width,
-            ),
-            Center(
-              child: Container(
-                padding: EdgeInsets.all(20.0),
-                margin: EdgeInsets.all(20.0),
-                width: MediaQuery.of(context).size.width,
-                height: 400,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(
-                            'https://images.unsplash.com/photo-1560237606-09822618c1f9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=675&q=80')),
-                    border: Border.all(
-                      color: Colors.black,
-                    )),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 450.0, left: 300.0),
-              height: 85.0,
-              width: 85.0,
-              alignment: Alignment.bottomRight,
-              color: Colors.transparent,
-              child: Material(
-                color: Colors.transparent,
-                child: Center(
-                  child: Ink(
-                    padding: EdgeInsets.all(1.0),
-                    decoration: ShapeDecoration(
-                      color: Colors.grey[300],
-                      shape: CircleBorder(),
+        backgroundColor: Colors.white,
+        body: SingleChildScrollView(
+          child: Container(
+            child: Column(
+              children: [
+                Stack(
+                  children: <Widget>[
+                    Image.network(
+                      widget._dest.image,
+                      //"https://live.staticflickr.com/6193/6108976279_34208dfde7_b.jpg",
+                      height: 300,
+                      width: MediaQuery.of(context).size.width,
+                      fit: BoxFit.cover,
                     ),
-                    child: IconButton(
-                      icon:
-                          Icon(liked ? Icons.favorite : Icons.favorite_border),
-                      color: liked ? Colors.pink[500] : Colors.black,
-                      iconSize: 70.0,
-                      onPressed: () {
-                        pressed();
-                        if (liked) {
-                          addToFav(widget._dest.name);
-                        }
-                      },
+                    Container(
+                      height: 300,
+                      color: Colors.black12,
+                      padding: EdgeInsets.only(top: 50),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.only(left: 24, right: 24),
+                            child: Row(
+                              children: <Widget>[
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.arrow_back,
+                                    color: Colors.white,
+                                    size: 30,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                                Spacer(),
+                                IconButton(
+                                  icon: Icon(
+                                    liked
+                                        ? Icons.favorite
+                                        : Icons.favorite_border,
+                                    color: liked ? Colors.red : Colors.grey,
+                                    size: 40,
+                                  ),
+                                  onPressed: () {
+                                    pressed();
+                                    if (liked) {
+                                      addToFav(widget._dest.name);
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                          Spacer(),
+                          //SizedBox(height: 130,),
+                          Container(
+                            padding: EdgeInsets.only(left: 24, right: 24),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  widget._dest.name,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 30,
+                                    shadows: [
+                                      Shadow(
+                                          // bottomLeft
+                                          offset: Offset(-2.0, -2.0),
+                                          color: Colors.black),
+                                      Shadow(
+                                          // bottomRight
+                                          offset: Offset(2.0, 2.0),
+                                          color: Colors.black),
+                                      Shadow(
+                                          // topRight
+                                          offset: Offset(2.0, 2.0),
+                                          color: Colors.black),
+                                      Shadow(
+                                          // topLeft
+                                          offset: Offset(2.0, 2.0),
+                                          color: Colors.black),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(30),
+                                        topRight: Radius.circular(30))),
+                                height: 30,
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ),
+                Container(
+                  padding:
+                      EdgeInsets.only(left: 20, top: 0, right: 20, bottom: 20),
+                  child: Column(children: [
+                    Text(
+                      widget._dest.description,
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Icon(
+                          Icons.access_time,
+                          color: Colors.black,
+                          size: 20,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          "Timings: ",
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          widget._dest.timings,
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Icon(
+                          Icons.attach_money,
+                          color: Colors.black,
+                          size: 20,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          "Tickets: ",
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          widget._dest.tickets,
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ]),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
-    );
+          ),
+        ));
   }
 }

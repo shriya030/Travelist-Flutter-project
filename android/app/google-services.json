@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "429357043747",
+    "firebase_url": "https://travelist-3aab0.firebaseio.com",
+    "project_id": "travelist-3aab0",
+    "storage_bucket": "travelist-3aab0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:429357043747:android:20ad51b6d3ed97d8f16196",
+        "android_client_info": {
+          "package_name": "com.example.Travelist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "429357043747-7tut5ceu1hagua1u54i7euk5r5k9svrr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-m6Xh_Gw2hg3j-7D69B1xGQfsjLqikik"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "429357043747-7tut5ceu1hagua1u54i7euk5r5k9svrr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
