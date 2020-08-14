@@ -25,7 +25,7 @@ class _ExplorePageState extends State<ExplorePage> {
 
   Future<List<States>> _getStates() async {
     var data = await http
-        .get("http://www.json-generator.com/api/json/get/cgfTEQpTtu?indent=2");
+        .get("https://next.json-generator.com/api/json/get/4ylE8qC-t?indent=2");
 
     List<dynamic> jsonData = jsonDecode(data.body);
 
@@ -36,7 +36,7 @@ class _ExplorePageState extends State<ExplorePage> {
 
   Future<List<States>> _getFiltered(String text) async {
     var data = await http
-        .get("http://www.json-generator.com/api/json/get/cgfTEQpTtu?indent=2");
+        .get("https://next.json-generator.com/api/json/get/4ylE8qC-t?indent=2");
 
     List<dynamic> jsonData = jsonDecode(data.body);
 
@@ -299,6 +299,10 @@ class Cities {
 }
 
 class Destinations {
+  String image;
+  String image1;
+  String image2;
+  String image3;
   String name;
   String description;
   String location;
@@ -314,6 +318,8 @@ class Destinations {
     location = json['location'];
     timings = json['timings'];
     tickets = json['tickets'];
+    image = json['image'];
+
   }
 
   Map<String, dynamic> toJson() {
@@ -323,6 +329,7 @@ class Destinations {
     data['location'] = this.location;
     data['timings'] = this.timings;
     data['tickets'] = this.tickets;
+    data['image'] = this.image;
     return data;
   }
 }
