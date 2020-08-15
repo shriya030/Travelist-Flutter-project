@@ -40,6 +40,24 @@ class ConnectionPage extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 20.0,
                       color: Colors.white,
+                      shadows: [
+                        Shadow(
+                          // bottomLeft
+                            offset: Offset(-2.0, -2.0),
+                            color: Colors.black),
+                        Shadow(
+                          // bottomRight
+                            offset: Offset(2.0, 2.0),
+                            color: Colors.black),
+                        Shadow(
+                          // topRight
+                            offset: Offset(2.0, 2.0),
+                            color: Colors.black),
+                        Shadow(
+                          // topLeft
+                            offset: Offset(2.0, 2.0),
+                            color: Colors.black),
+                      ],
                     ),
                     textAlign: TextAlign.center,
                   ),
