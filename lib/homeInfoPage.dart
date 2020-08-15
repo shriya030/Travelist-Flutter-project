@@ -59,7 +59,7 @@ class _InfoPageState extends State<InfoPage> {
           children: <Widget>[
             Image(
               image: NetworkImage(
-                  "https://www.telegraph.co.uk/content/dam/Travel/2019/November/india-orccha.jpg"),
+                  "https://images.unsplash.com/photo-1524613032530-449a5d94c285?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=675&q=80"),
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
               fit: BoxFit.cover,
