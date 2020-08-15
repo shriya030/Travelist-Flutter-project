@@ -8,11 +8,11 @@ import 'connectionPage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() => runApp(MaterialApp(
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
-      home: ExplorePage(),
-      debugShowCheckedModeBanner: false,
-    ));
+  theme: ThemeData.light(),
+  darkTheme: ThemeData.dark(),
+  home: ExplorePage(),
+  debugShowCheckedModeBanner: false,
+));
 
 class ExplorePage extends StatefulWidget {
   @override
@@ -21,7 +21,7 @@ class ExplorePage extends StatefulWidget {
 
 class _ExplorePageState extends State<ExplorePage> {
   final SearchBarController<States> _searchBarController =
-      SearchBarController();
+  SearchBarController();
   bool isReplay = false;
 
   Future<List<States>> _getStates() async {
@@ -31,7 +31,7 @@ class _ExplorePageState extends State<ExplorePage> {
     List<dynamic> jsonData = jsonDecode(data.body);
 
     List<States> states =
-        jsonData.map((jsonData) => States.fromJson(jsonData)).toList();
+    jsonData.map((jsonData) => States.fromJson(jsonData)).toList();
     return states;
   }
 
@@ -42,11 +42,11 @@ class _ExplorePageState extends State<ExplorePage> {
     List<dynamic> jsonData = jsonDecode(data.body);
 
     List<States> states =
-        jsonData.map((jsonData) => States.fromJson(jsonData)).toList();
+    jsonData.map((jsonData) => States.fromJson(jsonData)).toList();
 
     List<States> _filtered = states
         .where((element) =>
-            element.state.toLowerCase().startsWith(text.toLowerCase()))
+        element.state.toLowerCase().startsWith(text.toLowerCase()))
         .toList();
     print(_filtered);
     return _filtered;
@@ -133,15 +133,15 @@ class _ExplorePageState extends State<ExplorePage> {
                     if (snapshot.data == null) {
                       return Center(
                           child: Container(
-                        child: Text("Loading ......"),
-                      ));
+                            child: Text("Loading ......"),
+                          ));
                     } else {
                       return GridView.builder(
                           gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  mainAxisSpacing: 2,
-                                  crossAxisSpacing: 2),
+                          SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 2,
+                              crossAxisSpacing: 2),
                           itemCount: snapshot.data.length,
                           itemBuilder: (BuildContext context, int index) {
                             return Container(
@@ -153,7 +153,7 @@ class _ExplorePageState extends State<ExplorePage> {
                                 image: DecorationImage(
                                   fit: BoxFit.cover,
                                   image:
-                                      NetworkImage(snapshot.data[index].image),
+                                  NetworkImage(snapshot.data[index].image),
                                 ),
                                 //color: Colors.indigo[800],
                                 shape: BoxShape.rectangle,
@@ -167,6 +167,24 @@ class _ExplorePageState extends State<ExplorePage> {
                                   style: TextStyle(
                                     fontSize: 20.0,
                                     color: Colors.white,
+                                    shadows: [
+                                      Shadow(
+                                        // bottomLeft
+                                          offset: Offset(-2.0, -2.0),
+                                          color: Colors.black),
+                                      Shadow(
+                                        // bottomRight
+                                          offset: Offset(2.0, 2.0),
+                                          color: Colors.black),
+                                      Shadow(
+                                        // topRight
+                                          offset: Offset(2.0, 2.0),
+                                          color: Colors.black),
+                                      Shadow(
+                                        // topLeft
+                                          offset: Offset(2.0, 2.0),
+                                          color: Colors.black),
+                                    ],
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
@@ -325,11 +343,11 @@ class Destinations {
 
   Destinations(
       {this.name,
-      this.image,
-      this.description,
-      this.location,
-      this.timings,
-      this.tickets});
+        this.image,
+        this.description,
+        this.location,
+        this.timings,
+        this.tickets});
 
   Destinations.fromJson(Map<String, dynamic> json) {
     name = json['name'];
