@@ -88,7 +88,7 @@ class _AttractionPageState extends State<AttractionPage> {
                                     liked
                                         ? Icons.favorite
                                         : Icons.favorite_border,
-                                    color: liked ? Colors.red : Colors.grey,
+                                    color: liked ? Colors.red : Colors.red[700],
                                     size: 40,
                                   ),
                                   onPressed: () {
