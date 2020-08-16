@@ -55,9 +55,8 @@ class _AttractionPageState extends State<AttractionPage> {
               children: [
                 Stack(
                   children: <Widget>[
-                    Image.network(
+                    Image.asset(
                       widget._dest.image,
-                      //"https://live.staticflickr.com/6193/6108976279_34208dfde7_b.jpg",
                       height: 300,
                       width: MediaQuery.of(context).size.width,
                       fit: BoxFit.cover,

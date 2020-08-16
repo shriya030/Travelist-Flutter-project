@@ -25,16 +25,13 @@ class DestinationPage extends StatelessWidget {
           itemCount: _city.destinations.length,
           itemBuilder: (BuildContext context, int index) {
             return Container(
-              //height: 300.0,
-              //width: MediaQuery.of(context).size.width / 2,
               padding: EdgeInsets.all(10.0),
               margin: EdgeInsets.all(3.0),
               decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: NetworkImage(_city.destinations[index].image),
+                  image: AssetImage(_city.destinations[index].image),
                 ),
-                //color: Colors.indigo[800],
                 shape: BoxShape.rectangle,
                 //borderRadius:
                 //    BorderRadius.all(Radius.circular(30.0)),
@@ -46,6 +43,24 @@ class DestinationPage extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 20.0,
                     color: Colors.white,
+                    shadows: [
+                      Shadow(
+                          // bottomLeft
+                          offset: Offset(-2.0, -2.0),
+                          color: Colors.black),
+                      Shadow(
+                          // bottomRight
+                          offset: Offset(2.0, 2.0),
+                          color: Colors.black),
+                      Shadow(
+                          // topRight
+                          offset: Offset(2.0, 2.0),
+                          color: Colors.black),
+                      Shadow(
+                          // topLeft
+                          offset: Offset(2.0, 2.0),
+                          color: Colors.black),
+                    ],
                   ),
                   textAlign: TextAlign.center,
                 ),

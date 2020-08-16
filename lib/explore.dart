@@ -26,7 +26,7 @@ class _ExplorePageState extends State<ExplorePage> {
 
   Future<List<States>> _getStates() async {
     var data = await http
-        .get("https://next.json-generator.com/api/json/get/Ny63yxm1K");
+        .get("https://next.json-generator.com/api/json/get/EyT3LJqeF");
 
     List<dynamic> jsonData = jsonDecode(data.body);
 
@@ -37,7 +37,7 @@ class _ExplorePageState extends State<ExplorePage> {
 
   Future<List<States>> _getFiltered(String text) async {
     var data = await http
-        .get("https://next.json-generator.com/api/json/get/Ny63yxm1K");
+        .get("https://next.json-generator.com/api/json/get/EyT3LJqeF");
 
     List<dynamic> jsonData = jsonDecode(data.body);
 
@@ -83,43 +83,36 @@ class _ExplorePageState extends State<ExplorePage> {
             Row(
               children: [
                 Container(
-                  //margin: EdgeInsets.only(left: 10.0, right: 10.0),
                   height: 10.0,
                   width: MediaQuery.of(context).size.width / 7,
                   color: Colors.red,
                 ),
                 Container(
-                  //margin: EdgeInsets.only(left: 10.0, right: 10.0),
                   height: 10.0,
                   width: MediaQuery.of(context).size.width / 7,
                   color: Colors.orange,
                 ),
                 Container(
-                  //margin: EdgeInsets.only(left: 10.0, right: 10.0),
                   height: 10.0,
                   width: MediaQuery.of(context).size.width / 7,
                   color: Colors.yellow,
                 ),
                 Container(
-                  //margin: EdgeInsets.only(left: 10.0, right: 10.0),
                   height: 10.0,
                   width: MediaQuery.of(context).size.width / 7,
                   color: Colors.green,
                 ),
                 Container(
-                  //margin: EdgeInsets.only(left: 10.0, right: 10.0),
                   height: 10.0,
                   width: MediaQuery.of(context).size.width / 7,
                   color: Colors.blue,
                 ),
                 Container(
-                  //margin: EdgeInsets.only(left: 10.0, right: 10.0),
                   height: 10.0,
                   width: MediaQuery.of(context).size.width / 7,
                   color: Colors.indigo,
                 ),
                 Container(
-                  //margin: EdgeInsets.only(left: 10.0, right: 10.0),
                   height: 10.0,
                   width: MediaQuery.of(context).size.width / 7,
                   color: Colors.purple,
@@ -145,17 +138,13 @@ class _ExplorePageState extends State<ExplorePage> {
                           itemCount: snapshot.data.length,
                           itemBuilder: (BuildContext context, int index) {
                             return Container(
-                              //height: 300.0,
-                              //width: MediaQuery.of(context).size.width / 2,
                               padding: EdgeInsets.all(10.0),
                               margin: EdgeInsets.all(3.0),
                               decoration: BoxDecoration(
                                 image: DecorationImage(
                                   fit: BoxFit.cover,
-                                  image:
-                                      NetworkImage(snapshot.data[index].image),
+                                  image: AssetImage(snapshot.data[index].image),
                                 ),
-                                //color: Colors.indigo[800],
                                 shape: BoxShape.rectangle,
                                 //borderRadius:
                                 //    BorderRadius.all(Radius.circular(30.0)),
@@ -167,6 +156,24 @@ class _ExplorePageState extends State<ExplorePage> {
                                   style: TextStyle(
                                     fontSize: 20.0,
                                     color: Colors.white,
+                                    shadows: [
+                                      Shadow(
+                                          // bottomLeft
+                                          offset: Offset(-2.0, -2.0),
+                                          color: Colors.black),
+                                      Shadow(
+                                          // bottomRight
+                                          offset: Offset(2.0, 2.0),
+                                          color: Colors.black),
+                                      Shadow(
+                                          // topRight
+                                          offset: Offset(2.0, 2.0),
+                                          color: Colors.black),
+                                      Shadow(
+                                          // topLeft
+                                          offset: Offset(2.0, 2.0),
+                                          color: Colors.black),
+                                    ],
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
