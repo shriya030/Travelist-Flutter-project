@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:async';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -24,9 +25,12 @@ class _ExplorePageState extends State<ExplorePage> {
       SearchBarController();
   bool isReplay = false;
 
+  final ref = FirebaseStorage.instance.ref().child('Telangana.json');
+
   Future<List<States>> _getStates() async {
-    var data = await http
-        .get("https://next.json-generator.com/api/json/get/EyT3LJqeF");
+    final url = await ref.getDownloadURL();
+
+    var data = await http.get(url.toString());
 
     List<dynamic> jsonData = jsonDecode(data.body);
 
@@ -36,8 +40,9 @@ class _ExplorePageState extends State<ExplorePage> {
   }
 
   Future<List<States>> _getFiltered(String text) async {
-    var data = await http
-        .get("https://next.json-generator.com/api/json/get/EyT3LJqeF");
+    final url = await ref.getDownloadURL();
+
+    var data = await http.get(url.toString());
 
     List<dynamic> jsonData = jsonDecode(data.body);
 
@@ -126,10 +131,12 @@ class _ExplorePageState extends State<ExplorePage> {
                     if (snapshot.data == null) {
                       return Center(
                           child: Container(
-                        child: Text("Loading ......"),
+                        child: CircularProgressIndicator(),
+                        //child: Text("Loading ......"),
                       ));
                     } else {
                       return GridView.builder(
+                          cacheExtent: 9999,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
@@ -137,13 +144,15 @@ class _ExplorePageState extends State<ExplorePage> {
                                   crossAxisSpacing: 2),
                           itemCount: snapshot.data.length,
                           itemBuilder: (BuildContext context, int index) {
+                            final _theimage =
+                                NetworkImage(snapshot.data[index].image);
                             return Container(
                               padding: EdgeInsets.all(10.0),
                               margin: EdgeInsets.all(3.0),
                               decoration: BoxDecoration(
                                 image: DecorationImage(
                                   fit: BoxFit.cover,
-                                  image: AssetImage(snapshot.data[index].image),
+                                  image: _theimage,
                                 ),
                                 shape: BoxShape.rectangle,
                                 //borderRadius:

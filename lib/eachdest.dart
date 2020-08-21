@@ -55,7 +55,7 @@ class _AttractionPageState extends State<AttractionPage> {
               children: [
                 Stack(
                   children: <Widget>[
-                    Image.asset(
+                    Image.network(
                       widget._dest.image,
                       height: 300,
                       width: MediaQuery.of(context).size.width,
@@ -165,7 +165,7 @@ class _AttractionPageState extends State<AttractionPage> {
                     Text(
                       widget._dest.description,
                       style: TextStyle(
-                        fontSize: 15,
+                        fontSize: 17,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
