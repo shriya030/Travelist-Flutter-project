@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'explore.dart';
 //import 'package:url_launcher/url_launcher.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -43,9 +44,9 @@ class _AttractionPageState extends State<AttractionPage> {
 
   @override
   Widget build(BuildContext context) {
-    //launchURL() {
-    //  launch(widget._dest.location);
-    //}
+    launchURL() {
+      launch(widget._dest.location);
+    }
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -215,7 +216,7 @@ class _AttractionPageState extends State<AttractionPage> {
                           width: 5,
                         ),
                         Text(
-                          "Tickets: ",
+                          "Entry Fee: ",
                           style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w500,
@@ -230,6 +231,18 @@ class _AttractionPageState extends State<AttractionPage> {
                             fontSize: 15,
                             fontWeight: FontWeight.w500,
                           ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        FloatingActionButton.extended(
+                          onPressed: launchURL,
+                          label: Text('Directions'),
+                          icon: Icon(Icons.directions),
+                          backgroundColor: Colors.black,
                         ),
                       ],
                     ),
