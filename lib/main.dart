@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/loginPage.dart';
 import 'dart:async';
-import 'homePage.dart';
 
 void main() => runApp(MaterialApp(
       home: SplashScreen(),
@@ -18,8 +18,8 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Timer(
         Duration(seconds: 5),
-        () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (BuildContext context) => MyHomePage())));
+        () => Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (BuildContext context) => LoginPage())));
   }
 
   @override

@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/explore.dart';
 import 'package:flutter_app/eachdest.dart';
 
-class DestinationPage extends StatelessWidget {
-  final States _states;
-  final Cities _city;
+class DestinationPage extends StatefulWidget {
+  final _states;
+  final _city;
   DestinationPage(this._states, this._city);
 
+  @override
+  _DestinationPageState createState() => _DestinationPageState();
+}
+
+class _DestinationPageState extends State<DestinationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +23,7 @@ class DestinationPage extends StatelessWidget {
               children: <Widget>[
                 Positioned.fill(
                   child: Image.network(
-                    _city.image,
+                    widget._city["image"],
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -44,7 +48,7 @@ class DestinationPage extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.all(2.0),
                     child: Text(
-                      _states.state,
+                      widget._states["state"],
                       style: TextStyle(
                         fontSize: 21.0,
                         color: Colors.grey[600],
@@ -64,7 +68,7 @@ class DestinationPage extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          _city.name,
+                          widget._city["name"],
                           style: TextStyle(
                               fontSize: 26.0, fontWeight: FontWeight.bold),
                         ),
@@ -83,13 +87,15 @@ class DestinationPage extends StatelessWidget {
             ),
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
+                final image = widget._city["destinations"][index]["image"];
+                final _theimage = NetworkImage(image);
                 return Container(
                   //padding: EdgeInsets.all(10.0),
                   margin: EdgeInsets.all(3.0),
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: NetworkImage(_city.destinations[index].image),
+                      image: _theimage,
                     ),
                     shape: BoxShape.rectangle,
                     //borderRadius:
@@ -98,9 +104,9 @@ class DestinationPage extends StatelessWidget {
                   child: FlatButton(
                     color: Colors.transparent,
                     child: Text(
-                      _city.destinations[index].name,
+                      widget._city["destinations"][index]["name"],
                       style: TextStyle(
-                        fontSize: 20.0,
+                        fontSize: 21.0,
                         color: Colors.white,
                         shadows: [
                           Shadow(
@@ -127,13 +133,13 @@ class DestinationPage extends StatelessWidget {
                       Navigator.push(
                           context,
                           new MaterialPageRoute(
-                              builder: (context) =>
-                                  AttractionPage(_city.destinations[index])));
+                              builder: (context) => AttractionPage(
+                                  widget._city["destinations"][index])));
                     },
                   ),
                 );
               },
-              childCount: _city.destinations.length,
+              childCount: widget._city["destinations"].length,
             ),
           ),
         ],

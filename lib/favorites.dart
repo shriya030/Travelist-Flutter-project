@@ -1,7 +1,9 @@
 import 'dart:ui';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/eachdest.dart';
 
 class TheFavoritesPage extends StatefulWidget {
   @override
@@ -9,16 +11,30 @@ class TheFavoritesPage extends StatefulWidget {
 }
 
 class _TheFavoritesPageState extends State<TheFavoritesPage> {
-  DatabaseReference dbRef = FirebaseDatabase.instance.reference();
+  var _userID;
 
-  void removeData(index, key) {
+  DatabaseReference dbRef = FirebaseDatabase.instance.reference();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  void _getData() async {
+    final FirebaseUser _user = await _auth.currentUser();
+    final id = _user.uid;
+    _userID = id;
+  }
+
+  void removeData(index, key) async {
+    final FirebaseUser _user = await _auth.currentUser();
+    final id = _user.uid;
+    _userID = id;
     setState(() {
-      dbRef.child("Favorites").child(key).remove();
+      dbRef.child(id.toString()).child("Favorites").child(key).remove();
+      return id;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    _getData();
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -44,7 +60,7 @@ class _TheFavoritesPageState extends State<TheFavoritesPage> {
                 return Center(child: Text("Loading....."));
               }
               var data = snap.data.snapshot.value;
-              if (data == null) {
+              if (data[_userID.toString()]["Favorites"] == null) {
                 return Container(
                   alignment: Alignment.center,
                   child: Column(
@@ -67,8 +83,9 @@ class _TheFavoritesPageState extends State<TheFavoritesPage> {
                   ),
                 );
               } else {
-                var keys = data["Favorites"].keys.toList();
-                var _myFav = data["Favorites"].values.toList();
+                var keys = data[_userID.toString()]["Favorites"].keys.toList();
+                var _myFav =
+                    data[_userID.toString()]["Favorites"].values.toList();
                 return ListView.builder(
                   itemCount: _myFav.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -99,12 +116,49 @@ class _TheFavoritesPageState extends State<TheFavoritesPage> {
                             ),
                           ),
                         ),
-                        child: ListTile(
-                          title: Text(
-                            _myFav[index].toString(),
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20.0,
+                        child: FlatButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        AttractionPage(_myFav[index])));
+                          },
+                          child: Container(
+                            margin: EdgeInsets.all(10.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              boxShadow: <BoxShadow>[
+                                BoxShadow(
+                                    color: Colors.grey[300],
+                                    blurRadius: 10.0,
+                                    offset: Offset(5.0, 5.0),
+                                    spreadRadius: 10.0)
+                              ],
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  margin: EdgeInsets.all(20.0),
+                                  height: 120.0,
+                                  width: 120.0,
+                                  decoration: BoxDecoration(
+                                    //borderRadius: BorderRadius.circular(30.0),
+                                    image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image:
+                                          NetworkImage(_myFav[index]["image"]),
+                                    ),
+                                  ),
+                                ),
+                                Flexible(
+                                  child: Text(
+                                    _myFav[index]["name"],
+                                    style: TextStyle(fontSize: 20.0),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),

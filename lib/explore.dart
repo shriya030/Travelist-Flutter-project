@@ -1,8 +1,7 @@
-import 'dart:convert';
 import 'dart:async';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'connectionPage.dart';
@@ -21,39 +20,26 @@ class ExplorePage extends StatefulWidget {
 }
 
 class _ExplorePageState extends State<ExplorePage> {
-  final SearchBarController<States> _searchBarController =
+  final SearchBarController<dynamic> _searchBarController =
       SearchBarController();
-  bool isReplay = false;
 
-  final ref = FirebaseStorage.instance.ref().child('Telangana.json');
+  final ref = FirebaseStorage.instance.ref().child('States.json');
 
-  Future<List<States>> _getStates() async {
-    final url = await ref.getDownloadURL();
+  DatabaseReference dbRef = FirebaseDatabase.instance.reference().child("Data");
 
-    var data = await http.get(url.toString());
-
-    List<dynamic> jsonData = jsonDecode(data.body);
-
-    List<States> states =
-        jsonData.map((jsonData) => States.fromJson(jsonData)).toList();
-    return states;
-  }
-
-  Future<List<States>> _getFiltered(String text) async {
-    final url = await ref.getDownloadURL();
-
-    var data = await http.get(url.toString());
-
-    List<dynamic> jsonData = jsonDecode(data.body);
-
-    List<States> states =
-        jsonData.map((jsonData) => States.fromJson(jsonData)).toList();
-
-    List<States> _filtered = states
+  Future<List<dynamic>> _getData(String text) async {
+    List<dynamic> _theStates = [];
+    await dbRef.once().then((DataSnapshot snapshot) {
+      for (int i = 0; i < 9; i++) {
+        var data = snapshot.value[i];
+        _theStates.add(data);
+      }
+    });
+    List<dynamic> _filtered = _theStates
         .where((element) =>
-            element.state.toLowerCase().startsWith(text.toLowerCase()))
+            element["state"].toLowerCase().startsWith(text.toLowerCase()))
         .toList();
-    print(_filtered);
+
     return _filtered;
   }
 
@@ -125,43 +111,31 @@ class _ExplorePageState extends State<ExplorePage> {
               ],
             ),
             Expanded(
-              child: FutureBuilder(
-                  future: _getStates(),
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    if (snapshot.data == null) {
-                      return Center(
-                          child: Container(
-                        child: CircularProgressIndicator(),
-                        //child: Text("Loading ......"),
-                      ));
+              child: StreamBuilder(
+                  stream: dbRef.onValue,
+                  builder: (context, snap) {
+                    if (!snap.hasData) {
+                      return Center(child: Text("Loading....."));
                     } else {
+                      var data = snap.data.snapshot.value;
                       return GridView.builder(
-                          cacheExtent: 9999,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  mainAxisSpacing: 2,
-                                  crossAxisSpacing: 2),
-                          itemCount: snapshot.data.length,
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 2.0,
+                            crossAxisSpacing: 2.0,
+                          ),
+                          itemCount: data.length,
                           itemBuilder: (BuildContext context, int index) {
-                            final _theimage =
-                                NetworkImage(snapshot.data[index].image);
                             return Container(
-                              padding: EdgeInsets.all(10.0),
-                              margin: EdgeInsets.all(3.0),
                               decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: _theimage,
-                                ),
-                                shape: BoxShape.rectangle,
-                                //borderRadius:
-                                //    BorderRadius.all(Radius.circular(30.0)),
-                              ),
+                                  image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(data[index]["image"]),
+                              )),
                               child: FlatButton(
-                                color: Colors.transparent,
                                 child: Text(
-                                  snapshot.data[index].state,
+                                  data[index]["state"],
                                   style: TextStyle(
                                     fontSize: 20.0,
                                     color: Colors.white,
@@ -190,15 +164,15 @@ class _ExplorePageState extends State<ExplorePage> {
                                   Navigator.push(
                                       context,
                                       new MaterialPageRoute(
-                                          builder: (context) => ConnectionPage(
-                                              snapshot.data[index])));
+                                          builder: (context) =>
+                                              ConnectionPage(data[index])));
                                 },
                               ),
                             );
                           });
                     }
                   }),
-            )
+            ),
           ],
         ),
       ),
@@ -215,8 +189,16 @@ class _ExplorePageState extends State<ExplorePage> {
               alignment: Alignment.topRight,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  IconButton(
+                    iconSize: 35.0,
+                    color: Colors.black,
+                    icon: Icon(Icons.arrow_back_ios),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
                   Text(
                     "Go Back",
                     style: TextStyle(
@@ -224,33 +206,25 @@ class _ExplorePageState extends State<ExplorePage> {
                       fontStyle: FontStyle.italic,
                     ),
                   ),
-                  IconButton(
-                    iconSize: 35.0,
-                    color: Colors.greenAccent[700],
-                    icon: Icon(Icons.clear),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
                 ],
               ),
             ),
             Expanded(
-              child: SearchBar<States>(
+              child: SearchBar<dynamic>(
                   searchBarPadding: EdgeInsets.symmetric(horizontal: 10.0),
                   headerPadding: EdgeInsets.symmetric(horizontal: 20.0),
                   listPadding: EdgeInsets.symmetric(horizontal: 10.0),
-                  onSearch: _getFiltered,
+                  onSearch: _getData,
                   hintText: "Search for a state ....",
                   searchBarController: _searchBarController,
                   minimumChars: 1,
                   loader: Center(
                     child: Container(child: Text("Searching .....")),
                   ),
-                  onItemFound: (States _state, int index) {
+                  onItemFound: (_state, index) {
                     return ListTile(
                         title: Text(
-                          _state.state,
+                          _state["state"],
                           style: TextStyle(
                             //fontWeight: FontWeight.bold,
                             fontSize: 20.0,
@@ -270,100 +244,5 @@ class _ExplorePageState extends State<ExplorePage> {
         ),
       ),
     );
-  }
-}
-
-class States {
-  String state;
-  String image;
-  List<Cities> cities;
-
-  States({this.state, this.cities});
-
-  States.fromJson(Map<String, dynamic> json) {
-    state = json['state'];
-    image = json['image'];
-    if (json['cities'] != null) {
-      cities = new List<Cities>();
-      json['cities'].forEach((v) {
-        cities.add(new Cities.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['state'] = this.state;
-    data['image'] = this.image;
-    if (this.cities != null) {
-      data['cities'] = this.cities.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
-class Cities {
-  String name;
-  String image;
-  List<Destinations> destinations;
-
-  Cities({this.name, this.image, this.destinations});
-
-  Cities.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    image = json['image'];
-    if (json['destinations'] != null) {
-      destinations = new List<Destinations>();
-      json['destinations'].forEach((v) {
-        destinations.add(new Destinations.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['image'] = this.image;
-    if (this.destinations != null) {
-      data['destinations'] = this.destinations.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
-class Destinations {
-  String name;
-  String image;
-  String description;
-  String location;
-  String timings;
-  String tickets;
-
-  Destinations(
-      {this.name,
-      this.image,
-      this.description,
-      this.location,
-      this.timings,
-      this.tickets});
-
-  Destinations.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    image = json['image'];
-    description = json['description'];
-    location = json['location'];
-    timings = json['timings'];
-    tickets = json['tickets'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['image'] = this.image;
-    data['description'] = this.description;
-    data['location'] = this.location;
-    data['timings'] = this.timings;
-    data['tickets'] = this.tickets;
-    return data;
   }
 }

@@ -1,12 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'explore.dart';
 //import 'package:url_launcher/url_launcher.dart';
 import 'package:firebase_database/firebase_database.dart';
 //import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class TheAttractionPage extends StatelessWidget {
-  final Destinations _dest;
+  final _dest;
   TheAttractionPage(this._dest);
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class TheAttractionPage extends StatelessWidget {
 }
 
 class AttractionPage extends StatefulWidget {
-  final Destinations _dest;
+  final _dest;
   AttractionPage(this._dest);
 
   @override
@@ -37,8 +37,12 @@ class _AttractionPageState extends State<AttractionPage> {
 
   final databaseReference = FirebaseDatabase.instance.reference();
 
-  void addToFav(item) {
-    databaseReference.child("Favorites").push().set(item);
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  void addToFav(item, data) async {
+    final FirebaseUser _user = await _auth.currentUser();
+    final id = _user.uid;
+    databaseReference.child(id.toString()).child("Favorites").push().set(data);
   }
 
   @override
@@ -56,7 +60,7 @@ class _AttractionPageState extends State<AttractionPage> {
                 Stack(
                   children: <Widget>[
                     Image.network(
-                      widget._dest.image,
+                      widget._dest["image"],
                       height: 300,
                       width: MediaQuery.of(context).size.width,
                       fit: BoxFit.cover,
@@ -94,7 +98,8 @@ class _AttractionPageState extends State<AttractionPage> {
                                   onPressed: () {
                                     pressed();
                                     if (liked) {
-                                      addToFav(widget._dest.name);
+                                      addToFav(
+                                          widget._dest["name"], widget._dest);
                                     }
                                   },
                                 ),
@@ -109,7 +114,7 @@ class _AttractionPageState extends State<AttractionPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  widget._dest.name,
+                                  widget._dest["name"],
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w600,
@@ -163,7 +168,7 @@ class _AttractionPageState extends State<AttractionPage> {
                       EdgeInsets.only(left: 20, top: 0, right: 20, bottom: 20),
                   child: Column(children: [
                     Text(
-                      widget._dest.description,
+                      widget._dest["description"],
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w500,
@@ -185,18 +190,20 @@ class _AttractionPageState extends State<AttractionPage> {
                         Text(
                           "Timings: ",
                           style: TextStyle(
-                            fontSize: 15,
+                            fontSize: 16,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
                         SizedBox(
                           width: 5,
                         ),
-                        Text(
-                          widget._dest.timings,
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
+                        Flexible(
+                          child: Text(
+                            widget._dest["timings"],
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
                       ],
@@ -217,18 +224,20 @@ class _AttractionPageState extends State<AttractionPage> {
                         Text(
                           "Tickets: ",
                           style: TextStyle(
-                            fontSize: 15,
+                            fontSize: 16,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
                         SizedBox(
                           width: 5,
                         ),
-                        Text(
-                          widget._dest.tickets,
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
+                        Flexible(
+                          child: Text(
+                            widget._dest["tickets"],
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
                       ],
