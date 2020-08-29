@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-//import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:firebase_database/firebase_database.dart';
 //import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -47,9 +47,9 @@ class _AttractionPageState extends State<AttractionPage> {
 
   @override
   Widget build(BuildContext context) {
-    //launchURL() {
-    //  launch(widget._dest.location);
-    //}
+    launchURL() {
+      launch(widget._dest["location"]);
+    }
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -239,6 +239,18 @@ class _AttractionPageState extends State<AttractionPage> {
                               fontWeight: FontWeight.w500,
                             ),
                           ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        FloatingActionButton.extended(
+                          onPressed: launchURL,
+                          label: Text('Directions'),
+                          icon: Icon(Icons.directions),
+                          backgroundColor: Colors.black,
                         ),
                       ],
                     ),
