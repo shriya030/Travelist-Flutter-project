@@ -1,312 +1,177 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:firebase_database/firebase_database.dart';
-//import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class TheAttractionPage extends StatelessWidget {
-  final _state;
-  final _city;
-  final _dest;
-  TheAttractionPage(this._state, this._city, this._dest);
+class Posts extends StatefulWidget {
+  @override
+  _PostsState createState() => _PostsState();
+}
+
+class _PostsState extends State<Posts> {
+  DatabaseReference dbRef = FirebaseDatabase.instance.reference();
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: AttractionPage(_dest),
-      debugShowCheckedModeBanner: false,
+    return Scaffold(
+      body: SafeArea(
+        child: StreamBuilder(
+            stream: dbRef.child("Posts").onValue,
+            builder: (context, snap) {
+              if (!snap.hasData) {
+                return Center(child: Text("Loading....."));
+              }
+              var data = snap.data.snapshot.value;
+              if (data == null) {
+                return Center(
+                    child: Text(
+                  "Oops Looks like you have no feed!",
+                  style: TextStyle(
+                    fontSize: 22.0,
+                  ),
+                  textAlign: TextAlign.center,
+                ));
+              }
+              var key = data.keys.toList();
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 10.0, top: 5.0),
+                    child: Text("Posts",
+                        style: TextStyle(
+                            fontSize: 45.0, fontWeight: FontWeight.w400)),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: data.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Container(
+                            margin: EdgeInsets.all(10.0),
+                            padding: EdgeInsets.all(5.0),
+                            height: 250,
+                            width: MediaQuery.of(context).size.width,
+                            decoration:
+                                BoxDecoration(color: Colors.white, boxShadow: [
+                              BoxShadow(
+                                blurRadius: 10.0,
+                                color: Colors.grey,
+                                spreadRadius: 1.0,
+                              )
+                            ]),
+                            child: Column(
+                              children: [
+                                Container(
+                                  //height: 100.0,
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                          colors: [
+                                        Colors.pink,
+                                        Colors.deepPurple
+                                      ])),
+                                  child: Row(
+                                    children: [
+                                      IconButton(
+                                        icon: Icon(Icons.account_circle),
+                                        onPressed: () {},
+                                      ),
+                                      Text(
+                                        data[key[index]]["username"],
+                                        style: TextStyle(fontSize: 23.0),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Flexible(
+                                  child: Container(
+                                    height: 100.0,
+                                    width: MediaQuery.of(context).size.width,
+                                    margin: EdgeInsets.all(10.0),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                    ),
+                                    child: Text(data[key[index]]["post"],
+                                        style: TextStyle(fontSize: 19.0)),
+                                  ),
+                                ),
+                                ListTile(
+                                  title: Text("Rating: ",
+                                      style: TextStyle(fontSize: 21.0)),
+                                  trailing:
+                                      _ratingSystem(data[key[index]]["rating"]),
+                                ),
+                                ListTile(
+                                  title: Text(data[key[index]]["destination"],
+                                      style: TextStyle(fontSize: 23.0)),
+                                  subtitle: Text(
+                                    data[key[index]]["city"].toString() +
+                                        ", " +
+                                        data[key[index]]["state"].toString(),
+                                    style: TextStyle(fontSize: 18.0),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                  ),
+                ],
+              );
+            }),
+      ),
+      floatingActionButton: FlatButton(
+        padding: EdgeInsets.only(left: 5.0, bottom: 5.0),
+        color: Colors.transparent,
+        onPressed: () {},
+        child: IconButton(
+          onPressed: () {
+            Navigator.push(context,
+                new MaterialPageRoute(builder: (context) => MakeAPost()));
+          },
+          icon: Icon(Icons.add_circle),
+          color: Colors.deepPurple[900],
+          iconSize: 60.0,
+        ),
+      ),
+    );
+  }
+
+  Widget _ratingSystem(number) {
+    return Container(
+      height: 50.0,
+      width: 200.0,
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: int.parse(number),
+          itemBuilder: (BuildContext context, int index) {
+            return Icon(Icons.star, color: Colors.amberAccent);
+          }),
     );
   }
 }
 
-class AttractionPage extends StatefulWidget {
-  final _dest;
-  AttractionPage(this._dest);
-
+class MakeAPost extends StatefulWidget {
   @override
-  _AttractionPageState createState() => _AttractionPageState();
+  _MakeAPostState createState() => _MakeAPostState();
 }
 
-class _AttractionPageState extends State<AttractionPage> {
-  bool liked = false;
-  int index = 0;
-
-  void pressed() {
-    setState(() {
-      liked = !liked;
-    });
-  }
-
-  final databaseReference = FirebaseDatabase.instance.reference();
-
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  void addToFav(item, data) async {
-    final FirebaseUser _user = await _auth.currentUser();
-    final id = _user.uid;
-    databaseReference.child(id.toString()).child("Favorites").push().set(data);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    launchURL() {
-      launch(widget._dest["location"]);
-    }
-
-    return Scaffold(
-        backgroundColor: Colors.white,
-        body: SingleChildScrollView(
-          child: Container(
-            child: Column(
-              children: [
-                Stack(
-                  children: <Widget>[
-                    Image.network(
-                      widget._dest["image"],
-                      height: 300,
-                      width: MediaQuery.of(context).size.width,
-                      fit: BoxFit.cover,
-                    ),
-                    Container(
-                      height: 300,
-                      color: Colors.black12,
-                      padding: EdgeInsets.only(top: 50),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.only(left: 24, right: 24),
-                            child: Row(
-                              children: <Widget>[
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.arrow_back,
-                                    color: Colors.white,
-                                    size: 30,
-                                  ),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                                Spacer(),
-                                IconButton(
-                                  padding:
-                                      EdgeInsets.only(top: 10.0, left: 10.0),
-                                  onPressed: () {
-                                    Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                MakeAPostFromDestPage(
-                                                    widget._dest["name"])));
-                                  },
-                                  icon: Icon(
-                                    Icons.comment,
-                                    color: Colors.black,
-                                    size: 40,
-                                  ),
-                                ),
-                                IconButton(
-                                  icon: Icon(
-                                    liked
-                                        ? Icons.favorite
-                                        : Icons.favorite_border,
-                                    color: liked ? Colors.red : Colors.red[700],
-                                    size: 40,
-                                  ),
-                                  onPressed: () {
-                                    pressed();
-                                    if (liked) {
-                                      addToFav(
-                                          widget._dest["name"], widget._dest);
-                                    }
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                          Spacer(),
-                          //SizedBox(height: 130,),
-                          Container(
-                            padding: EdgeInsets.only(left: 24, right: 24),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  widget._dest["name"],
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 30,
-                                    shadows: [
-                                      Shadow(
-                                          // bottomLeft
-                                          offset: Offset(-2.0, -2.0),
-                                          color: Colors.black),
-                                      Shadow(
-                                          // bottomRight
-                                          offset: Offset(2.0, 2.0),
-                                          color: Colors.black),
-                                      Shadow(
-                                          // topRight
-                                          offset: Offset(2.0, 2.0),
-                                          color: Colors.black),
-                                      Shadow(
-                                          // topLeft
-                                          offset: Offset(2.0, 2.0),
-                                          color: Colors.black),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Container(
-                                width: MediaQuery.of(context).size.width,
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(30),
-                                        topRight: Radius.circular(30))),
-                                height: 30,
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                  padding:
-                      EdgeInsets.only(left: 20, top: 0, right: 20, bottom: 20),
-                  child: Column(children: [
-                    Text(
-                      widget._dest["description"],
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Icon(
-                          Icons.access_time,
-                          color: Colors.black,
-                          size: 20,
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Text(
-                          "Timings: ",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Flexible(
-                          child: Text(
-                            widget._dest["timings"],
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Icon(
-                          Icons.attach_money,
-                          color: Colors.black,
-                          size: 20,
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Text(
-                          "Tickets: ",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Flexible(
-                          child: Text(
-                            widget._dest["tickets"],
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        FloatingActionButton.extended(
-                          onPressed: launchURL,
-                          label: Text('Directions'),
-                          icon: Icon(Icons.directions),
-                          backgroundColor: Colors.black,
-                        ),
-                      ],
-                    ),
-                  ]),
-                ),
-              ],
-            ),
-          ),
-        ));
-  }
-}
-
-class MakeAPostFromDestPage extends StatefulWidget {
-  final _destination;
-  MakeAPostFromDestPage(this._destination);
-
-  @override
-  _MakeAPostFromDestPageState createState() => _MakeAPostFromDestPageState();
-}
-
-class _MakeAPostFromDestPageState extends State<MakeAPostFromDestPage> {
+class _MakeAPostState extends State<MakeAPost> {
   TextEditingController _post = TextEditingController();
   TextEditingController _dest = TextEditingController();
-  TextEditingController _cityc = TextEditingController();
-  TextEditingController _cstate = TextEditingController();
+  TextEditingController _city = TextEditingController();
+  TextEditingController _state = TextEditingController();
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   DatabaseReference dbRef = FirebaseDatabase.instance.reference();
 
   final _formKey = GlobalKey<FormState>();
-
   var _userID;
-
   var _anotherUsername;
-
   var _username;
 
   int _rating = 0;
@@ -363,9 +228,6 @@ class _MakeAPostFromDestPageState extends State<MakeAPostFromDestPage> {
     setState(() {
       _getUser();
     });
-    if (widget._destination.toString() != null) {
-      _dest.text = widget._destination.toString();
-    }
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
@@ -387,9 +249,9 @@ class _MakeAPostFromDestPageState extends State<MakeAPostFromDestPage> {
                       splashColor: Colors.transparent,
                       onPressed: () {
                         _addToPosts(_post.text, _username.toString(),
-                            _dest.text, _cityc.text, _cstate.text);
+                            _dest.text, _city.text, _state.text);
                         _addToUserData(_post.text, _username.toString(),
-                            _dest.text, _cityc.text, _cstate.text);
+                            _dest.text, _city.text, _state.text);
                         Navigator.pop(context);
                       },
                       child: Text("POST",
@@ -543,7 +405,7 @@ class _MakeAPostFromDestPageState extends State<MakeAPostFromDestPage> {
                                 onPressed: () {},
                                 icon: Icon(Icons.location_on)),
                             title: TextField(
-                              controller: _cityc,
+                              controller: _city,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: "City/District",
@@ -562,7 +424,7 @@ class _MakeAPostFromDestPageState extends State<MakeAPostFromDestPage> {
                                 onPressed: () {},
                                 icon: Icon(Icons.location_on)),
                             title: TextField(
-                              controller: _cstate,
+                              controller: _state,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: "State",

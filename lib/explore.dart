@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flappy_search_bar/flappy_search_bar.dart';
@@ -22,8 +21,6 @@ class ExplorePage extends StatefulWidget {
 class _ExplorePageState extends State<ExplorePage> {
   final SearchBarController<dynamic> _searchBarController =
       SearchBarController();
-
-  final ref = FirebaseStorage.instance.ref().child('States.json');
 
   DatabaseReference dbRef = FirebaseDatabase.instance.reference().child("Data");
 

@@ -29,10 +29,8 @@ class _InfoPageState extends State<InfoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        alignment: Alignment.topCenter,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
+      body: SingleChildScrollView(
+        child: Container(
           child: Stack(
             //alignment: Alignment.center,
             children: <Widget>[
@@ -43,10 +41,9 @@ class _InfoPageState extends State<InfoPage> {
                 height: MediaQuery.of(context).size.height,
                 fit: BoxFit.cover,
               ),
-              /*
               SafeArea(
                 child: Container(
-                  color: Colors.white38,
+                  color: Colors.white54,
                   height: 50.0,
                   width: MediaQuery.of(context).size.width,
                   margin: EdgeInsets.all(15.0),
@@ -56,15 +53,21 @@ class _InfoPageState extends State<InfoPage> {
                     children: [
                       IconButton(
                         padding: EdgeInsets.all(5.0),
-                          icon: Icon(Icons.info_outline),
+                        icon: Icon(Icons.info_outline),
                         onPressed: () {},
                       ),
-                      Text("COVID-19 Update on Travelling", style: TextStyle(letterSpacing: 1.0, fontSize: 15.0)),
+                      Flexible(
+                        child: Text(
+                            "Some sites may be closed due to the COVID-19 Pandemic",
+                            style: TextStyle(
+                                letterSpacing: 1.0,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w600)),
+                      ),
                     ],
                   ),
                 ),
               ),
-              */
               Container(
                 margin: EdgeInsets.only(
                   top: 100,
@@ -171,7 +174,7 @@ class _InfoPageState extends State<InfoPage> {
                                               child: Container(
                                                 width: 170.0,
                                                 margin: EdgeInsets.only(
-                                                    bottom: 5.0,
+                                                    bottom: 7.0,
                                                     left: 20.0,
                                                     right: 20.0),
                                                 decoration: BoxDecoration(
@@ -199,7 +202,7 @@ class _InfoPageState extends State<InfoPage> {
                                                               16),
                                                       child: Image(
                                                         width: 170,
-                                                        height: 150,
+                                                        height: 140,
                                                         fit: BoxFit.cover,
                                                         image: NetworkImage(
                                                             data[index]
@@ -207,7 +210,7 @@ class _InfoPageState extends State<InfoPage> {
                                                       ),
                                                     ),
                                                     Text(
-                                                      data[index]["type"],
+                                                      data[index]["title"],
                                                       style: TextStyle(
                                                         fontSize: 15.0,
                                                       ),

@@ -60,6 +60,30 @@ class _TheFavoritesPageState extends State<TheFavoritesPage> {
                 return Center(child: Text("Loading....."));
               }
               var data = snap.data.snapshot.value;
+              if (data[_userID.toString()] == null) {
+                return Container(
+                  alignment: Alignment.center,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        "Looks like you are logged in as a Guest! Unfortunately, you can only explore the sites. Register and experience all facilites",
+                        style: TextStyle(
+                          fontSize: 22.0,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(Icons.tag_faces),
+                        iconSize: 32.0,
+                      )
+                    ],
+                  ),
+                );
+              }
+
               if (data[_userID.toString()]["Favorites"] == null) {
                 return Container(
                   alignment: Alignment.center,

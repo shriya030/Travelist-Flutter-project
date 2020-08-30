@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_app/homeInfoPage.dart';
+import 'package:flutter_app/makeAPost.dart';
 import 'package:flutter_app/settingsPage.dart';
 //import 'eachdest.dart';
 import 'explore.dart';
@@ -34,6 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return [
       InfoPage(),
       ExplorePage(),
+      Posts(),
       TheFavoritesPage(),
       SettingsPage(),
     ];
@@ -54,10 +56,16 @@ class _MyHomePageState extends State<MyHomePage> {
         inactiveColor: CupertinoColors.activeBlue,
       ),
       PersistentBottomNavBarItem(
+        icon: Icon(Icons.pages),
+        title: ("Posts"),
+        activeColor: Colors.deepOrange[700],
+        inactiveColor: Colors.orange[700],
+      ),
+      PersistentBottomNavBarItem(
         icon: Icon(Icons.favorite),
         title: ("Favorites"),
-        activeColor: CupertinoColors.systemRed,
-        inactiveColor: CupertinoColors.systemPink,
+        activeColor: Colors.red[700],
+        inactiveColor: Colors.pinkAccent[400],
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.settings),
@@ -99,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
         duration: Duration(milliseconds: 200),
       ),
       navBarStyle:
-          NavBarStyle.style6, // Choose the nav bar style with this property.
+          NavBarStyle.style8, // Choose the nav bar style with this property.
     );
   }
 }

@@ -83,7 +83,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       obscureText: false,
                       decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: "Firstname",
+                          hintText: "Firstname *",
                           hintStyle: TextStyle(
                               color: Colors.grey[400], fontSize: 15.0)),
                     ),
@@ -106,7 +106,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       obscureText: false,
                       decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: "Lastname",
+                          hintText: "Lastname *",
                           hintStyle: TextStyle(
                               color: Colors.grey[400], fontSize: 15.0)),
                     ),
@@ -129,32 +129,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         obscureText: false,
                         decoration: InputDecoration(
                             border: InputBorder.none,
-                            hintText: "Email",
+                            hintText: "Email *",
                             hintStyle: TextStyle(
                                 color: Colors.grey[400], fontSize: 15.0))),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(10.0),
-                    margin: EdgeInsets.all(10.0),
-                    height: 42.0,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(color: Colors.grey[300]),
-                      ),
-                      //borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                      color: Colors.white,
-                      //boxShadow: [BoxShadow(offset: Offset(1.0, 2.0), blurRadius: 3.0, color: Colors.grey[400])]
-                    ),
-                    child: TextField(
-                      controller: _phone,
-                      obscureText: false,
-                      decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: "Phone Number",
-                          hintStyle: TextStyle(
-                              color: Colors.grey[400], fontSize: 15.0)),
-                    ),
                   ),
                   Container(
                     padding: EdgeInsets.all(10.0),
@@ -174,7 +151,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       obscureText: false,
                       decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: "Username",
+                          hintText: "Username *",
                           hintStyle: TextStyle(
                               color: Colors.grey[400], fontSize: 15.0)),
                     ),
@@ -197,7 +174,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       obscureText: false,
                       decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: "Password",
+                          hintText: "Password *",
                           hintStyle: TextStyle(
                               color: Colors.grey[400], fontSize: 15.0)),
                     ),
@@ -220,7 +197,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       obscureText: false,
                       decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: "Re-enter your password",
+                          hintText: "Re-enter your password *",
                           hintStyle: TextStyle(
                               color: Colors.grey[400], fontSize: 15.0)),
                     ),
@@ -253,6 +230,17 @@ class _RegisterPageState extends State<RegisterPage> {
             _email.text = "";
             _password.text = "";
             _passwordCheck.text = "";
+            print(e.toString());
+            if (e.toString() ==
+                "PlatformException(error, Given String is empty or null, null)") {
+              var error = "All fields are mandatory";
+              _showAlert(error.toString());
+            }
+            if (e.toString() ==
+                "PlatformException(ERROR_EMAIL_ALREADY_IN_USE, The email address is already in use by another account., null)") {
+              var error = "This email is already in use by another user";
+              _showAlert(error.toString());
+            }
             if (e.toString() ==
                     "PlatformException(ERROR_INVALID_EMAIL, The email address is badly formatted., null)" &&
                 _password.text == _passwordCheck.text) {
