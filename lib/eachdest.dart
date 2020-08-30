@@ -3,13 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:firebase_database/firebase_database.dart';
-//import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class TheAttractionPage extends StatelessWidget {
-  final _state;
-  final _city;
   final _dest;
-  TheAttractionPage(this._state, this._city, this._dest);
+  TheAttractionPage(this._dest);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -302,13 +299,9 @@ class _MakeAPostFromDestPageState extends State<MakeAPostFromDestPage> {
   DatabaseReference dbRef = FirebaseDatabase.instance.reference();
 
   final _formKey = GlobalKey<FormState>();
-
   var _userID;
-
   var _anotherUsername;
-
   var _username;
-
   int _rating = 0;
 
   void rate(int rating) {
