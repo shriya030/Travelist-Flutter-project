@@ -13,7 +13,8 @@ class TheFavoritesPage extends StatefulWidget {
 class _TheFavoritesPageState extends State<TheFavoritesPage> {
   var _userID;
 
-  DatabaseReference dbRef = FirebaseDatabase.instance.reference();
+  DatabaseReference dbRef =
+      FirebaseDatabase.instance.reference().child("Users");
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   void _getData() async {

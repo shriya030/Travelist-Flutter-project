@@ -41,7 +41,12 @@ class _AttractionPageState extends State<AttractionPage> {
   void addToFav(item, data) async {
     final FirebaseUser _user = await _auth.currentUser();
     final id = _user.uid;
-    databaseReference.child(id.toString()).child("Favorites").push().set(data);
+    databaseReference
+        .child("Users")
+        .child(id.toString())
+        .child("Favorites")
+        .push()
+        .set(data);
   }
 
   @override
@@ -86,22 +91,6 @@ class _AttractionPageState extends State<AttractionPage> {
                                   },
                                 ),
                                 Spacer(),
-                                IconButton(
-                                  padding:
-                                      EdgeInsets.only(top: 10.0, left: 10.0),
-                                  onPressed: () {
-                                    Navigator.of(context).pushReplacement(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                MakeAPostFromDestPage(
-                                                    widget._dest["name"])));
-                                  },
-                                  icon: Icon(
-                                    Icons.comment,
-                                    color: Colors.black,
-                                    size: 40,
-                                  ),
-                                ),
                                 IconButton(
                                   icon: Icon(
                                     liked
@@ -342,7 +331,7 @@ class _MakeAPostFromDestPageState extends State<MakeAPostFromDestPage> {
 
   void _addToUserData(String post, String username, String destination,
       String city, String state) {
-    dbRef.child(_userID.toString()).child("Posts").push().set({
+    dbRef.child("Users").child(_userID.toString()).child("Posts").push().set({
       "post": post.toString(),
       "destination": destination.toString(),
       "city": city.toString(),

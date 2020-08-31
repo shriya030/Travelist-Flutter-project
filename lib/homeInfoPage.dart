@@ -32,7 +32,6 @@ class _InfoPageState extends State<InfoPage> {
       body: SingleChildScrollView(
         child: Container(
           child: Stack(
-            //alignment: Alignment.center,
             children: <Widget>[
               Image(
                 image: NetworkImage(
@@ -46,7 +45,7 @@ class _InfoPageState extends State<InfoPage> {
                   color: Colors.white54,
                   height: 50.0,
                   width: MediaQuery.of(context).size.width,
-                  margin: EdgeInsets.all(15.0),
+                  margin: EdgeInsets.all(10.0),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -184,9 +183,9 @@ class _InfoPageState extends State<InfoPage> {
                                                           16.0),
                                                   boxShadow: [
                                                     BoxShadow(
-                                                      blurRadius: 40,
+                                                      blurRadius: 10,
                                                       color: Color(0x99000000),
-                                                      offset: Offset(4, 20),
+                                                      offset: Offset(1, 1),
                                                     ),
                                                   ],
                                                 ),

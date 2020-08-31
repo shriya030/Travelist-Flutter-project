@@ -51,7 +51,7 @@ class _PostsState extends State<Posts> {
                           return Container(
                             margin: EdgeInsets.all(10.0),
                             padding: EdgeInsets.all(5.0),
-                            height: 250,
+                            height: 300,
                             width: MediaQuery.of(context).size.width,
                             decoration:
                                 BoxDecoration(color: Colors.white, boxShadow: [
@@ -88,7 +88,6 @@ class _PostsState extends State<Posts> {
                                 ),
                                 Flexible(
                                   child: Container(
-                                    height: 100.0,
                                     width: MediaQuery.of(context).size.width,
                                     margin: EdgeInsets.all(10.0),
                                     decoration: BoxDecoration(
@@ -187,12 +186,17 @@ class _MakeAPostState extends State<MakeAPost> {
     final user = await _auth.currentUser();
     final id = user.uid;
     _userID = id;
-    dbRef.child(_userID.toString()).once().then((value) {
+    dbRef.child("Users").child(_userID.toString()).once().then((value) {
       var username = value.value["username"];
       _anotherUsername = username;
     });
 
-    dbRef.child(_userID.toString()).child("username").once().then((value) {
+    dbRef
+        .child("Users")
+        .child(_userID.toString())
+        .child("username")
+        .once()
+        .then((value) {
       _username = value.value;
       //print("VALUE = " + value.value);
     });
@@ -214,7 +218,7 @@ class _MakeAPostState extends State<MakeAPost> {
 
   void _addToUserData(String post, String username, String destination,
       String city, String state) {
-    dbRef.child(_userID.toString()).child("Posts").push().set({
+    dbRef.child("Users").child(_userID.toString()).child("Posts").push().set({
       "post": post.toString(),
       "destination": destination.toString(),
       "city": city.toString(),
@@ -298,9 +302,9 @@ class _MakeAPostState extends State<MakeAPost> {
                         //padding: EdgeInsets.all(5.0),
                         height: 200.0,
                         decoration: BoxDecoration(
-                            border: Border.all(
-                          color: Colors.grey[100],
-                        )),
+                            //border: Border.all(
+                            //color: Colors.grey[100],
+                            ),
                         child: TextField(
                           controller: _post,
                           keyboardType: TextInputType.multiline,

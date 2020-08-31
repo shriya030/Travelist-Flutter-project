@@ -106,8 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                   width: 280.0,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(
-                          "https://gitlab.com/ravisha7feb/Project-Travelist-Group-18/-/raw/master/assets/images/FinalLogo-1.png"),
+                      image: AssetImage("assets/images/FinalLogo-1.png"),
                     ),
                   ),
                 ),
@@ -140,7 +139,7 @@ class _LoginPageState extends State<LoginPage> {
                             errorStyle:
                                 TextStyle(fontSize: 12.0, color: Colors.red),
                             border: InputBorder.none,
-                            hintText: "Enter your email or username ...",
+                            hintText: "Enter your email ...",
                             hintStyle:
                                 TextStyle(color: Colors.black, fontSize: 16.0)),
                       ),
@@ -159,7 +158,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       child: TextField(
                         controller: _password,
-                        obscureText: false,
+                        obscureText: true,
                         decoration: InputDecoration(
                           errorText: _loginFail ? "Invalid credentials" : null,
                           errorStyle:

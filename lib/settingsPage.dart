@@ -24,7 +24,7 @@ class _SettingsPageState extends State<SettingsPage> {
       _userID = id;
       var email = _user.email;
       _email = email;
-      dbRef.child(id.toString()).onValue.forEach((element) {
+      dbRef.child("Users").child(id.toString()).onValue.forEach((element) {
         var name = element.snapshot.value["name"];
         _name = name;
         var un = element.snapshot.value["username"];
@@ -176,7 +176,12 @@ class _SettingsPageState extends State<SettingsPage> {
                   children: [
                     Text("About Us", style: TextStyle(fontSize: 19.0)),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                                builder: (context) => AboutUs()));
+                      },
                       splashRadius: 1.0,
                       iconSize: 10.0,
                       icon: Icon(Icons.arrow_forward_ios),
@@ -283,9 +288,7 @@ class _ChangePasswordState extends State<ChangePassword> {
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController _email = TextEditingController();
-
   TextEditingController _password = TextEditingController();
-
   TextEditingController _changedPassword = TextEditingController();
 
   void _changePassword() async {
@@ -473,7 +476,7 @@ class _MyPostsState extends State<MyPosts> {
     final user = await _auth.currentUser();
     final id = user.uid;
     _userID = id;
-    dbRef.child(_userID.toString()).once().then((value) {
+    dbRef.child("Users").child(_userID.toString()).once().then((value) {
       var un = value.value["username"];
       _username = un;
     });
@@ -485,7 +488,12 @@ class _MyPostsState extends State<MyPosts> {
     _userID = id;
     print("Yay");
     setState(() {
-      dbRef.child(id.toString()).child("Posts").child(key.toString()).remove();
+      dbRef
+          .child("Users")
+          .child(id.toString())
+          .child("Posts")
+          .child(key.toString())
+          .remove();
       dbRef
           .child("Posts")
           .orderByChild("post")
@@ -508,7 +516,7 @@ class _MyPostsState extends State<MyPosts> {
                 return Center(child: Text("Getting your posts...."));
               } else {
                 var data = snap.data.snapshot.value;
-                if (data[_userID.toString()]["Posts"] == null) {
+                if (data["Users"][_userID.toString()]["Posts"] == null) {
                   return Container(
                     alignment: Alignment.center,
                     child: Column(
@@ -531,8 +539,9 @@ class _MyPostsState extends State<MyPosts> {
                     ),
                   );
                 } else {
-                  var key = data[_userID.toString()]["Posts"].keys.toList();
-                  var _myPosts = data[_userID.toString()]["Posts"];
+                  var key =
+                      data["Users"][_userID.toString()]["Posts"].keys.toList();
+                  var _myPosts = data["Users"][_userID.toString()]["Posts"];
                   return ListView(
                     children: [
                       Row(
@@ -599,17 +608,20 @@ class _MyPostsState extends State<MyPosts> {
                                     ],
                                   ),
                                   Container(
-                                    height: 50.0,
+                                    //height: 50.0,
                                     width: MediaQuery.of(context).size.width,
                                     margin: EdgeInsets.all(10.0),
                                     decoration: BoxDecoration(
                                       color: Colors.white,
                                     ),
-                                    child: Text(
-                                        _myPosts[key[index]]["post"].toString(),
-                                        style: TextStyle(
-                                            fontSize: 19.0,
-                                            color: Colors.grey[800])),
+                                    child: Flexible(
+                                      child: Text(
+                                          _myPosts[key[index]]["post"]
+                                              .toString(),
+                                          style: TextStyle(
+                                              fontSize: 19.0,
+                                              color: Colors.grey[800])),
+                                    ),
                                   ),
                                   Row(
                                     children: [

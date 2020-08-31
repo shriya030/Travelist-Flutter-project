@@ -171,7 +171,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     child: TextField(
                       controller: _password,
-                      obscureText: false,
+                      obscureText: true,
                       decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: "Password *",
@@ -194,7 +194,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     child: TextField(
                       controller: _passwordCheck,
-                      obscureText: false,
+                      obscureText: true,
                       decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: "Re-enter your password *",
@@ -218,7 +218,7 @@ class _RegisterPageState extends State<RegisterPage> {
             if (user != null && _password.text == _passwordCheck.text) {
               Navigator.pop(context);
             }
-            ref.child(user.uid).set({
+            ref.child("Users").child(user.uid).set({
               "name": (_firstname.text + " " + _lastname.text).toString(),
               "username": _username.text,
             });
